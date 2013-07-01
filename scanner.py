@@ -1,4 +1,8 @@
 import uuid
+from ply import lex
+
+class Symbol(str):
+    pass
 
 tokens = (
     'OPEN',
@@ -14,7 +18,6 @@ tokens = (
 
 # Tokens
 
-t_SYMBOL = r'[a-zA-Z0-9_+/:=]+'
 t_OPEN   = r'<'
 t_CLOSE  = r'>'
 
@@ -54,6 +57,11 @@ def t_NULL(t):
     t.value = None
     return t
 
+def t_SYMBOL(t):
+    r'[a-zA-Z0-9_+/:=]+'
+    t.value = Symbol(t.value)
+    return t
+
 # Ignored characters
 t_ignore = ' \t'
 
@@ -65,7 +73,6 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-from ply import lex
 lex.lex()
 
 def tokenize(string):

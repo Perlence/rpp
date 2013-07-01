@@ -1,3 +1,4 @@
+from ply import yacc
 from scanner import tokens
 
 def p_tree(t):
@@ -46,5 +47,4 @@ def p_value(t):
 def p_error(t):
     print("Syntax error on line %d at '%s'" % (t.lineno, t.value))
 
-from ply import yacc
 yacc.yacc()
