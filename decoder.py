@@ -1,4 +1,4 @@
-from tokens import tokens
+from scanner import tokens
 
 def p_tree(t):
     '''tree : OPEN items CLOSE'''

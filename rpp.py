@@ -1,13 +1,8 @@
-import tokens
-import syntax
+import scanner
+import decoder
 
-def tokenize(string):
-    tokens.lex.input(string)
-    while True:
-        tok = tokens.lex.token()
-        if not tok: 
-            break
-        yield tok
+def loads(string):
+    return decoder.yacc.parse(string)
 
-def parse(*args, **kwargs):
-    return syntax.yacc.parse(*args, **kwargs)
+def load(fp):
+    return decoder.yacc.parse(fp.read())

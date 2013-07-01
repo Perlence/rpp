@@ -67,3 +67,11 @@ def t_error(t):
 
 from ply import lex
 lex.lex()
+
+def tokenize(string):
+    lex.input(string)
+    while True:
+        tok = lex.token()
+        if not tok: 
+            break
+        yield tok
