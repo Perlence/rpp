@@ -45,6 +45,8 @@ def p_value(t):
     t[0] = t[1]
 
 def p_error(t):
-    print("Syntax error on line %d at '%s'" % (t.lineno, t.value))
+    args = t.lineno or 0, t.type
+    message = "Syntax error at line %d, token=%s" % args
+    raise ValueError(message)
 
 yacc.yacc()

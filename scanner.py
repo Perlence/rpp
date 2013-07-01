@@ -70,8 +70,9 @@ def t_newline(t):
     t.lexer.lineno += len(t.value.splitlines())
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    args = t.value[0], t.lineno or 0
+    message = "Scanning error. Illegal character '%s' at line %d" % args
+    raise lex.LexError(message, '')
 
 lex.lex()
 
