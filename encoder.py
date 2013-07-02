@@ -1,4 +1,4 @@
-import uuid
+from uuid import UUID
 from scanner import Symbol
 
 def tostr(value):
@@ -6,7 +6,7 @@ def tostr(value):
         return str(value)
     elif isinstance(value, str):
         return '"%s"' % value
-    elif isinstance(value, uuid.UUID):
+    elif isinstance(value, UUID):
         return '{%s}' % value
     else:
         return str(value)

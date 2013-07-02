@@ -2,7 +2,8 @@ import uuid
 from ply import lex
 
 class Symbol(str):
-    pass
+    def __repr__(self):
+        return '@' + str.__repr__(self)
 
 tokens = (
     'OPEN',
@@ -70,9 +71,9 @@ def t_newline(t):
     t.lexer.lineno += len(t.value.splitlines())
 
 def t_error(t):
-    args = t.value[0], t.lineno or 0
-    message = "Scanning error. Illegal character '%s' at line %d" % args
-    raise lex.LexError(message, '')
+    s = t.lexer.lexdata[t.lexer.lexpos:]
+    message = "Scanning error. Illegal character '%s' at line %d" % (t.value[0], t.lineno or 0)
+    raise lex.LexError(message, s)
 
 lex.lex()
 
