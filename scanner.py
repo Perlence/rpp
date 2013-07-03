@@ -3,7 +3,8 @@ from ply import lex
 
 class Symbol(str):
     def __repr__(self):
-        return '@' + str.__repr__(self)
+        return 'Symbol(%s)' % str.__repr__(self)
+
 
 tokens = (
     'OPEN',

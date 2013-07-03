@@ -2,6 +2,7 @@ import scanner
 import decoder
 import encoder
 from scanner import Symbol
+from decoder import RPP
 
 def loads(string):
     return decoder.yacc.parse(string)
