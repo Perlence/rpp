@@ -7,6 +7,13 @@ class RPP(list):
 
     def findall(self, name):
         '''Find all elements that start with given name
+
+        :returns: generator of tuples with first element as list of tree indexes 
+                  and the second as the found value.
+
+        >>> l = RPP([['NAME', 1, 2], RPP([['NUN', 1, 5.234, 'x']]), RPP([['SUS', 3]])])
+        >>> list(l.findall('SUS'))
+        [([2, 0], ['SUS', 3]])]
         '''
         for i, x in enumerate(self):
             if isinstance(x, RPP):
@@ -17,18 +24,8 @@ class RPP(list):
 
     def find(self, name):
         '''Find first element that starts with given name
-
-        :returns: tuple with first element as list of tree indexes and the second
-                  as the found value.
-
-        >>> l = RPP([['NAME', 1, 2], RPP([['NUN', 1, 5.234, 'x']]), RPP([['SUS', 3]])])
-        >>> l.find('SUS')
-        ([2, 0], ['SUS', 3]])
         '''
-        try:
-            return self.findall(name).next()
-        except StopIteration:
-            return None
+        return next(self.findall(name), None)
 
     def update(self, indexes, value):
         '''Traverse the list using given indexes and change the value
