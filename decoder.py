@@ -10,41 +10,42 @@ class RPP(list):
         '''
         for i, x in enumerate(self):
             if isinstance(x, RPP):
-                for y in x.findall(name):
-                    yield [i] + y
+                for js, y in x.findall(name):
+                    yield [i] + js, y
             elif x[0] == name:
-                yield [i, x]
+                yield [i], x
 
     def find(self, name):
         '''Find first element that starts with given name
 
-        :returns: List where first elements are indexes and the last is the found value.
+        :returns: tuple with first element as list of tree indexes and the second
+                  as the found value.
 
         >>> l = RPP([['NAME', 1, 2], RPP([['NUN', 1, 5.234, 'x']]), RPP([['SUS', 3]])])
         >>> l.find('SUS')
-        [2, 0, ['SUS', 3]]
+        ([2, 0], ['SUS', 3]])
         '''
         try:
             return self.findall(name).next()
         except StopIteration:
             return None
 
-    def update(self, *args):
+    def update(self, indexes, value):
         '''Traverse the list using given indexes and change the value
 
-        :param *indexes: list of indexes
+        :param indexes:  list of indexes
         :param value:    new value
 
         >>> l = RPP([['NAME', 1, 2], RPP([['NUN', 1, 5.234, 'x']]), RPP([['SUS', 3]])])
-        >>> l.update(1, 0, ['LUL', 42])
+        >>> l.update([1, 0], ['LUL', 42])
         >>> l
         RPP([['NAME', 1, 2], RPP([['LUL', 42]]), RPP([['SUS', 3]])])
         '''
-        getindexes, setindex, value = args[:-2], args[-2], args[-1]
+        lastindex = indexes.pop(-1)
         level = self
-        for i in getindexes:
+        for i in indexes:
             level = level[i]
-        level[setindex] = value
+        level[lastindex] = value
 
 
 def p_tree(t):
