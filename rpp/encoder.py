@@ -8,6 +8,8 @@ def tostr(value):
         return '"%s"' % value
     elif isinstance(value, UUID):
         return '{%s}' % value
+    elif value is None:
+        return '-'
     else:
         return str(value)
 
