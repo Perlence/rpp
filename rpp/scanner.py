@@ -76,7 +76,7 @@ def t_error(t):
     message = "Scanning error. Illegal character '%s' at line %d" % (t.value[0], t.lineno or 0)
     raise lex.LexError(message, s)
 
-lex.lex()
+lex.lex(optimize=False, debug=False)
 
 def tokenize(string):
     lex.input(string)

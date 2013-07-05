@@ -92,4 +92,4 @@ def p_error(t):
     message = "Syntax error at line %d, token=%s" % (t.lineno or 0, t.type)
     raise ValueError(message)
 
-yacc.yacc()
+yacc.yacc(optimize=True, debug=False, write_tables=False)
