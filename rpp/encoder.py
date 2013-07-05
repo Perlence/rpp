@@ -19,7 +19,7 @@ def encode(lists, indent=2, level=0):
         if i > 0:
             result += ' ' * (level + 1) * indent
         if all(not isinstance(x, list) for x in item):
-            name, values = item[0], item[1:]
+            name, values = item[0].upper(), item[1:]
             strvalues = map(tostr, values)
             result += ' '.join([name] + strvalues) + '\n'
         else:
