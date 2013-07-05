@@ -12,10 +12,10 @@ def tostr(value):
         return str(value)
 
 def encode(lists, indent=2, level=0):
-    result = ''
-    if any(isinstance(x, list) for x in lists):
-        result += '<'
+    result = '<'
     for i, item in enumerate(lists):
+        if not isinstance(item, list):
+            raise TypeError("%r is not RPP serializable" % item)
         if i > 0:
             result += ' ' * (level + 1) * indent
         if all(not isinstance(x, list) for x in item):
