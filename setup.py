@@ -22,9 +22,10 @@
 #    distribution.
 
 from distutils.core import setup
+import rpp
 
 setup(name='rpp',
-      version='0.1',
+      version=rpp.__version__,
       description='REAPER Project File Parser',
       author='Sviatoslav Abakumov',
       author_email='dust.harvesting@gmail.com',
