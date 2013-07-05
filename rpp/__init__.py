@@ -10,7 +10,7 @@ Encoding RPP::
 
     >>> import rpp
     >>> rpp.dumps([['ENTRY', 1, 2, 3], [['SUBFOLDER', '']]])
-    '<ENTRY 1 2 3\n  <SUBFOLDER ""\n  >\n>\n'
+    '<ENTRY 1 2 3\n  <SUBFOLDER ""\n  >\n>'
 """
 __version__ = '0.1'
 __all__ = [
@@ -30,8 +30,8 @@ def loads(string):
 def load(fp):
     return loads(fp.read())
 
-def dumps(lists):
-    return encoder.encode(lists)
+def dumps(lists, indent=2):
+    return encoder.encode(lists, indent=indent)
 
-def dump(lists, fp):
-    fp.write(dumps(lists))
+def dump(lists, fp, indent=2):
+    fp.write(dumps(lists, indent))

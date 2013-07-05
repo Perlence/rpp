@@ -18,8 +18,6 @@ tokens = (
     'INT',
     )
 
-# Tokens
-
 t_OPEN   = r'<'
 t_CLOSE  = r'>'
 

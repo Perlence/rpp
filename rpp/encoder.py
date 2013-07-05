@@ -21,8 +21,9 @@ def encode(lists, indent=2, level=0):
         if all(not isinstance(x, list) for x in item):
             name, values = item[0].upper(), item[1:]
             strvalues = map(tostr, values)
-            result += ' '.join([name] + strvalues) + '\n'
+            result += ' '.join([name] + strvalues)
         else:
             result += encode(item, level=(level + 1))
-    result += (' ' * level * indent) + '>\n'
+        result += '\n' if indent else ' '
+    result += (' ' * level * indent) + '>'
     return result
