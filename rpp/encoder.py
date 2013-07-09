@@ -1,13 +1,12 @@
-from uuid import UUID
-from scanner import Symbol
+from scanner import *
 
 def tostr(value):
     if isinstance(value, Symbol):
         return str(value)
     elif isinstance(value, str):
         return '"%s"' % value
-    elif isinstance(value, float):
-        return '%.14f' % value
+    elif isinstance(value, Decimal):
+        return format(value, 'f')
     elif isinstance(value, UUID):
         return '{%s}' % str(value).upper()
     elif value is None:
@@ -16,8 +15,6 @@ def tostr(value):
         return str(value)
 
 def encode(lists, indent=2, level=0):
-    if indent == 0:
-        raise ValueError('Indent should be present')
     result = '<'
     for i, item in enumerate(lists):
         if not isinstance(item, list):
@@ -35,6 +32,6 @@ def encode(lists, indent=2, level=0):
                     result += ' ' + strvalue
         else:
             result += encode(item, level=(level + 1))
-        result += '\n' if indent else ' '
+        result += '\n'
     result += (' ' * level * indent) + '>'
     return result

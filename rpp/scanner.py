@@ -1,4 +1,6 @@
-import uuid
+from uuid import UUID
+from decimal import Decimal
+
 from ply import lex
 
 class Symbol(str):
@@ -26,12 +28,12 @@ def t_NAME(t):
     return t
 
 def t_UUID(t):
-    r"(?P<quote>(?:'?))\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?P=quote)"
-    t.value = uuid.UUID(t.value.strip("'"))
+    r"(?P<quote>(?:'?))\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?P=quote)(?=\s+)"
+    t.value = UUID(t.value.strip("'"))
     return t
 
 def t_STRING(t):
-    r'(?:"([^"]*)")|(?:\'([^\']*)\')'
+    r'(?:"([^"]*)")|(?:\'([^\']*)\')(?=\s+)'
     if t.value[0] == '"':
         t.value = t.value.strip('"')
     else:
@@ -39,12 +41,12 @@ def t_STRING(t):
     return t
 
 def t_FLOAT(t):
-    r'-?\d+\.\d+'
-    t.value = float(t.value)
+    r'-?\d+\.\d+(?=\s+)'
+    t.value = Decimal(t.value)
     return t
 
 def t_INT(t):
-    r'-?\d+'
+    r'-?\d+(?=\s+)'
     try:
         t.value = int(t.value)
     except ValueError:
@@ -53,7 +55,7 @@ def t_INT(t):
     return t
 
 def t_NULL(t):
-    r'-'
+    r'-(?=\s+)'
     t.value = None
     return t
 
