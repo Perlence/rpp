@@ -85,7 +85,8 @@ def p_value(t):
              | FLOAT
              | STRING
              | UUID
-             | SYMBOL'''
+             | SYMBOL
+             | FORMAT'''
     t[0] = t[1]
 
 def p_error(t):

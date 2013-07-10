@@ -18,10 +18,15 @@ tokens = (
     'UUID',
     'FLOAT',
     'INT',
+    'FORMAT',
     )
 
 t_OPEN   = r'<'
 t_CLOSE  = r'>'
+
+def t_FORMAT(t):
+    r'(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK)(?=\s+)'
+    return t
 
 def t_NAME(t):
     r'[A-Z][A-Z0-9_]*(?=\s+)'
