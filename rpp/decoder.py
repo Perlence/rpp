@@ -1,5 +1,5 @@
 from ply import yacc
-from scanner import tokens
+from scanner import *
 
 class RPP(list):
     def __repr__(self):
@@ -64,7 +64,12 @@ def p_item_novalue(t):
 
 def p_item_list(t):
     '''item : NAME list'''
-    t[0] = RPP([t[1]]) + t[2]
+    if t[1] == 'E':
+        int_, hexes = t[2][0], t[2][1:]
+        hexes = [Hex(str(x)) for x in hexes]
+        t[0] = RPP([t[1]]) + [int_] + hexes
+    else:
+        t[0] = RPP([t[1]]) + t[2]
 
 def p_item_tree(t):
     '''item : tree'''

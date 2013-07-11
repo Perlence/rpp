@@ -1,7 +1,7 @@
 from scanner import *
 
 def tostr(value):
-    if isinstance(value, Symbol):
+    if isinstance(value, (Symbol, Format)):
         return str(value)
     elif isinstance(value, str):
         return '"%s"' % value

@@ -3,6 +3,25 @@ from decimal import Decimal
 
 from ply import lex
 
+class Hex(object):
+    def __init__(self, x):
+        self.value = int(x, 16)
+
+    def __int__(self):
+        return self.value
+
+    def __repr__(self):
+        return "Hex('%s')" % hex(self.value)
+
+    def __str__(self):
+        return hex(self.value).lstrip('0x').zfill(2)
+
+
+class Format(str):
+    def __repr__(self):
+        return 'Format(%s)' % str.__repr__(self)
+
+
 class Symbol(str):
     def __repr__(self):
         return 'Symbol(%s)' % str.__repr__(self)
@@ -11,21 +30,22 @@ class Symbol(str):
 tokens = (
     'OPEN',
     'CLOSE',
-    'NULL',
+    'FORMAT',
     'NAME',
-    'SYMBOL',
-    'STRING',
     'UUID',
+    'STRING',
     'FLOAT',
     'INT',
-    'FORMAT',
+    'NULL',
+    'SYMBOL',
     )
 
 t_OPEN   = r'<'
 t_CLOSE  = r'>'
 
 def t_FORMAT(t):
-    r'(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK)(?=\s+)'
+    r'(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK|MIDI)(?=\s+)'
+    t.value = Format(t.value)
     return t
 
 def t_NAME(t):
@@ -33,7 +53,7 @@ def t_NAME(t):
     return t
 
 def t_UUID(t):
-    r"(?P<quote>(?:'?))\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?P=quote)(?=\s+)"
+    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=\s+)"
     t.value = UUID(t.value.strip("'"))
     return t
 
@@ -52,11 +72,7 @@ def t_FLOAT(t):
 
 def t_INT(t):
     r'-?\d+(?=\s+)'
-    try:
-        t.value = int(t.value)
-    except ValueError:
-        print("Integer value too large %d", t.value)
-        t.value = 0
+    t.value = int(t.value)
     return t
 
 def t_NULL(t):
