@@ -1,7 +1,10 @@
 from uuid import UUID
 from decimal import Decimal
+import re
 
 from ply import lex
+
+p = re.compile(r' +')
 
 class Hex(object):
     def __init__(self, x):
@@ -22,6 +25,17 @@ class Format(str):
         return 'Format(%s)' % str.__repr__(self)
 
 
+class Chunk(object):
+    def __init__(self, c):
+        self.value = p.sub('', c)
+
+    def __repr__(self):
+        return '<Chunk: \n%s>\n' % self.value
+
+    def __str__(self):
+        return self.value
+
+
 class Symbol(str):
     def __repr__(self):
         return 'Symbol(%s)' % str.__repr__(self)
@@ -37,7 +51,8 @@ tokens = (
     'FLOAT',
     'INT',
     'NULL',
-    'SYMBOL',
+    'CHUNK',
+    'SYMBOL'
     )
 
 t_OPEN   = r'<'
@@ -80,15 +95,20 @@ def t_NULL(t):
     t.value = None
     return t
 
+def t_CHUNK(t):
+    r'([a-zA-Z0-9+/:=]+\s+)+(?=>)'
+    t.value = Chunk(t.value)
+    return t
+
 def t_SYMBOL(t):
-    r'[a-zA-Z0-9_+/:=\{\}\.]+'
-    t.value = Symbol(t.value)
+    r'[\w+:={}\.]+'
+    t.value = Symbol(t)
     return t
 
 # Ignored characters
 t_ignore = ' \t'
 
-def t_newline(t): 
+def t_newline(t):
     r'[\r\n]+'
     t.lexer.lineno += len(t.value.splitlines())
 

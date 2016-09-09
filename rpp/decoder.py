@@ -91,7 +91,8 @@ def p_value(t):
              | STRING
              | UUID
              | SYMBOL
-             | FORMAT'''
+             | FORMAT
+             | CHUNK'''
     t[0] = t[1]
 
 def p_error(t):
