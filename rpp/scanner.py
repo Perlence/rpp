@@ -81,7 +81,7 @@ def t_NULL(t):
     return t
 
 def t_SYMBOL(t):
-    r'[a-zA-Z0-9_+/:=]+'
+    r'[a-zA-Z0-9_+/:=\{\}\.]+'
     t.value = Symbol(t.value)
     return t
 
