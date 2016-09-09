@@ -1,5 +1,5 @@
 from ply import yacc
-from scanner import *
+from .scanner import *
 
 class RPP(list):
     def __repr__(self):

@@ -20,9 +20,9 @@ __all__ = [
 
 __author__ = 'Sviatoslav Abakumov <dust.harvesting@gmail.com>'
 
-from scanner import Symbol
-from decoder import RPP, yacc
-from encoder import encode
+from .scanner import Symbol
+from .decoder import RPP, yacc
+from .encoder import encode
 
 def loads(string):
     return decoder.yacc.parse(string)

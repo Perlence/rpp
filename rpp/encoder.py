@@ -1,4 +1,4 @@
-from scanner import *
+from .scanner import *
 
 def tostr(value):
     if isinstance(value, (Symbol, Format)):
