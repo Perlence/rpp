@@ -33,5 +33,6 @@ setup(name='rpp',
       url='https://bitbucket.org/Perlence/rpp/src',
       packages=['rpp'],
       package_dir={'rpp': 'rpp'},
+      install_requires=['ply'],
       requires=['ply'],
       )

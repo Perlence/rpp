@@ -12,7 +12,7 @@ Encoding RPP::
     >>> rpp.dumps([['ENTRY', 1, 2, 3], [['SUBFOLDER', '']]])
     '<ENTRY 1 2 3\n  <SUBFOLDER ""\n  >\n>'
 """
-__version__ = '0.1'
+__version__ = '0.2'
 __all__ = [
     'dump', 'dumps', 'load', 'loads',
     'RPP', 'Symbol',
