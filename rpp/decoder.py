@@ -5,7 +5,7 @@ class RPP(list):
     def __repr__(self):
         return "RPP(%s)" % list.__repr__(self)
 
-    def findall(self, name):
+    def findall(self, name, location = None):
         '''Find all elements that start with given name
 
         :returns: generator of tuples with first element as list of tree indexes 
@@ -16,11 +16,14 @@ class RPP(list):
         [([2, 0], ['SUS', 3]])]
         '''
         for i, x in enumerate(self):
-            if isinstance(x, RPP):
-                for js, y in x.findall(name):
-                    yield [i] + js, y
-            elif x[0] == name:
-                yield [i], x
+            if x[0] == name:
+                if location is None:
+                    yield [i], x
+                else:
+                    yield location + [i], x
+            elif isinstance(x, RPP):
+                js, y = x.findall(name, location = [i])
+                yield location + js, y
 
     def find(self, name):
         '''Find first element that starts with given name

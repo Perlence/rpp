@@ -30,7 +30,7 @@ class Chunk(object):
         self.value = p.sub('', c)
 
     def __repr__(self):
-        return '<Chunk: \n%s>\n' % self.value
+        return 'Chunk(\n%s)\n' % self.value
 
     def __str__(self):
         return self.value
@@ -102,7 +102,7 @@ def t_CHUNK(t):
 
 def t_SYMBOL(t):
     r'[\w+:={}\./]+'
-    t.value = Symbol(t)
+    t.value = Symbol(t.value)
     return t
 
 # Ignored characters
