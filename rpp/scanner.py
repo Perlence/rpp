@@ -108,7 +108,7 @@ def t_CHUNK(t):
     return t
 
 def t_SYMBOL(t):
-    r'[\w+:={}\./]+'
+    r'[\w+:={}\./\(\)]+'
     t.value = Symbol(t.value)
     return t
 
