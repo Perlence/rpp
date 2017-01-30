@@ -1,7 +1,7 @@
 from uuid import UUID
 from decimal import Decimal
 import re
-
+import base64
 from ply import lex
 
 p = re.compile(r' +')
@@ -27,14 +27,21 @@ class Format(str):
 
 class Chunk(object):
     def __init__(self, c):
-        self.value = p.sub('', c)
+        self.base64_value = p.sub('', c).translate(None, '\r\n')
 
     def __repr__(self):
-        return 'Chunk(\n%s)\n' % self.value
+        return 'Chunk(%s)' % self.value
 
     def __str__(self):
         return self.value
 
+    @property
+    def value(self):
+        return self.base64_value
+    
+    @property
+    def binary_value(self):
+        return base64.b64decode(self.base64_value)
 
 class Symbol(str):
     def __repr__(self):
