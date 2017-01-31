@@ -80,6 +80,16 @@ def t_UUID(t):
     t.value = UUID(t.value.strip("'"))
     return t
 
+# The imbeciles at Reaper write 'TRACK' 'NAME' entries with or without quotes depending on whether
+# there is a space in the string. This is insane and makes parsing unbelievably difficult:
+# some 'NAME' items will be scanned as STRING, others will be SYMBOLs, or NAMEs.
+# To try to work around this, we try to catch this context sensitive case and ultimately
+# generate a STRING token.
+def t_BOGUSSTRING(t):
+    r'(?<=NAME\s)(?:([^"\'\s]+))(?=\s+)'
+    t.type = 'STRING'
+    return t
+
 def t_STRING(t):
     r'(?:"([^"]*)")|(?:\'([^\']*)\')(?=\s+)'
     if t.value[0] == '"':
@@ -111,7 +121,7 @@ def t_CHUNK(t):
     return t
 
 def t_SYMBOL(t):
-    r'[\w+:={}\./\(\)]+'
+    r'[\w+:={}\-\./\(\)]+'
     t.value = Symbol(t.value)
     return t
 
