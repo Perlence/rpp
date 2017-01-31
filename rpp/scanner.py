@@ -65,8 +65,9 @@ tokens = (
 t_OPEN   = r'<'
 t_CLOSE  = r'>'
 
+# FORMAT should come before NAME so it is matched ahead of a Name.
 def t_FORMAT(t):
-    r'(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK|MIDI)(?=\s+)'
+    r'(WAV|WAVE|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK|MIDI)(?=\s+)'
     t.value = Format(t.value)
     return t
 
@@ -104,6 +105,8 @@ def t_NULL(t):
 
 def t_CHUNK(t):
     r'([a-zA-Z0-9+/:=]+\s+)+(?=>)'
+    # Update the line number count since we swallow newlines inside a chunk.
+    t.lexer.lineno += t.value.count('\n')
     t.value = Chunk(t.value)
     return t
 
@@ -131,5 +134,5 @@ def tokenize(string):
     while True:
         tok = lex.token()
         if not tok: 
-            break
+            break      # No more input
         yield tok
