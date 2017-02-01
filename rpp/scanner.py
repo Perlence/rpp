@@ -71,15 +71,6 @@ def t_FORMAT(t):
     t.value = Format(t.value)
     return t
 
-def t_NAME(t):
-    r'[A-Z][A-Z0-9_]*(?=\s+)'
-    return t
-
-def t_UUID(t):
-    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=\s+)"
-    t.value = UUID(t.value.strip("'"))
-    return t
-
 # The imbeciles at Reaper write 'TRACK' 'NAME' entries with or without quotes depending on whether
 # there is a space in the string. This is insane and makes parsing unbelievably difficult:
 # some 'NAME' items will be scanned as STRING, others will be SYMBOLs, or NAMEs.
@@ -88,6 +79,15 @@ def t_UUID(t):
 def t_BOGUSSTRING(t):
     r'(?<=NAME\s)(?:([^"\'\s]+))(?=\s+)'
     t.type = 'STRING'
+    return t
+
+def t_NAME(t):
+    r'[A-Z][A-Z0-9_]*(?=\s+)'
+    return t
+
+def t_UUID(t):
+    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=\s+)"
+    t.value = UUID(t.value.strip("'"))
     return t
 
 def t_STRING(t):
