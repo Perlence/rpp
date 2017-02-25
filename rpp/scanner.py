@@ -4,7 +4,7 @@ import re
 import base64
 from ply import lex
 
-p = re.compile(r' +')
+p = re.compile(r'\s+')
 
 class Hex(object):
     def __init__(self, x):
@@ -27,7 +27,7 @@ class Format(str):
 
 class Chunk(object):
     def __init__(self, c):
-        self.base64_value = p.sub('', c).translate(None, '\r\n')
+        self.base64_value = p.sub('', c)
 
     def __repr__(self):
         return 'Chunk(%s)' % self.value
