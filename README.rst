@@ -9,6 +9,7 @@ package is designed to be RPP parser/emitter and uses PLY as parser framework.
 It understands the following RPP data types: integer, float, string, uuid,
 symbolic data (base64).
 
+
 Examples
 --------
 
@@ -30,17 +31,17 @@ Decode RPP:
    >
    """)
    >>> r
-   RPP([['REAPER_PROJECT', 0.1, '4.32', 1372525904], ['RIPPLE', 0], ['GROUPOVERRIDE', 0, 0, 0], ['AUTOXFADE', 1]])
+   [('REAPER_PROJECT', Decimal(0.1), '4.32', 1372525904), ('RIPPLE', 0), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1)]
 
 Transform lists into RPP:
 
 .. code-block:: python
 
    >>> rpp.dumps(
-   [['REAPER_PROJECT', 0.1, '4.32', 1372525904],
-    ['RIPPLE', 0],
-    ['GROUPOVERRIDE', 0, 0, 0],
-    ['AUTOXFADE', 1]
+   [('REAPER_PROJECT', 0.1, '4.32', 1372525904),
+    ('RIPPLE', 0),
+    ('GROUPOVERRIDE', 0, 0, 0),
+    ('AUTOXFADE', 1)
    ])
    '<REAPER_PROJECT 0.1 "4.32" 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>'
 
@@ -58,14 +59,16 @@ To change the value of an item, do the following:
 
 .. code-block:: python
 
-   >>> r.update([1], ['RIPPLE', 1])
+   >>> r.update([1], ('RIPPLE', 1))
    >>> r
-   RPP([['REAPER_PROJECT', 0.1, '4.32', 1372525904], ['RIPPLE', 1], ['GROUPOVERRIDE', 0, 0, 0], ['AUTOXFADE', 1]])
+   (('REAPER_PROJECT', 0.1, '4.32', 1372525904), ('RIPPLE', 1), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1))
+
 
 Dependencies
 ------------
 
 - ply
+
 
 License
 -------
