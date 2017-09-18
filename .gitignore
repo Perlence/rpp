@@ -25,6 +25,7 @@ pip-log.txt
 .cache/
 .coverage
 .tox
+htmlcov/
 nosetests.xml
 
 # Translations
