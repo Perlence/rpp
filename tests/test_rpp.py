@@ -14,6 +14,12 @@ def test_rpp_update():
     assert l == RPP([['NAME', 1, 2], RPP([['LUL', 42]]), RPP([['SUS', 3]])])
 
 
+def test_symbol():
+    src = '<VST "VSTi: Oddity 2 (GForce)" Oddity2_x64_linux.so 0 "" 1330603058>'
+    expected = RPP([['VST', 'VSTi: Oddity 2 (GForce)', Symbol('Oddity2_x64_linux.so'), 0, '', 1330603058]])
+    assert loads(src) == expected
+
+
 def test_loads():
     src = """\
 <REAPER_PROJECT 0.1 "4.32" 1372525904
