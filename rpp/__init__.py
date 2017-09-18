@@ -12,26 +12,28 @@ Encoding RPP::
     >>> rpp.dumps([['ENTRY', 1, 2, 3], [['SUBFOLDER', '']]])
     '<ENTRY 1 2 3\n  <SUBFOLDER ""\n  >\n>'
 """
-__version__ = '0.1'
-__all__ = [
-    'dump', 'dumps', 'load', 'loads',
-    'RPP', 'Symbol',
-    ]
 
+from .scanner import Symbol
+from .decoder import RPP, yacc  # noqa
+from .encoder import encode  # noqa
+
+
+__version__ = '0.1'
+__all__ = ['dump', 'dumps', 'load', 'loads', 'RPP', 'Symbol']
 __author__ = 'Sviatoslav Abakumov <dust.harvesting@gmail.com>'
 
-from scanner import Symbol
-from decoder import RPP, yacc
-from encoder import encode
 
 def loads(string):
-    return decoder.yacc.parse(string)
+    return yacc.parse(string)
+
 
 def load(fp):
     return loads(fp.read())
 
+
 def dumps(lists, indent=2):
-    return encoder.encode(lists, indent=indent)
+    return encode(lists, indent=indent)
+
 
 def dump(lists, fp, indent=2):
     fp.write(dumps(lists, indent))

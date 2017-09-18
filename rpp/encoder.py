@@ -1,4 +1,5 @@
-from scanner import *
+from .scanner import Symbol, Format, Decimal, UUID
+
 
 def tostr(value):
     if isinstance(value, (Symbol, Format)):
@@ -13,6 +14,7 @@ def tostr(value):
         return '-'
     else:
         return str(value)
+
 
 def encode(lists, indent=2, level=0):
     result = '<'
