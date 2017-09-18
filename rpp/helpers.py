@@ -1,7 +1,7 @@
 def findall(l, name):
     """Find all elements that start with given name.
 
-    :returns: generator of tuples with first element as list of tree
+    :returns: generator of tuples with first element as tuple of tree
     indexes and the second as the found value.
     """
     for i, x in enumerate(l):
@@ -20,12 +20,12 @@ def find(l, name):
 def update(l, indexes, value):
     """Traverse the list using given indexes and change the value.
 
-    :param indexes: list of indexes
+    :param indexes: sequence of indexes
     :param value: new value
     """
     lastindex = indexes[-1]
-    initindices = indexes[:-1]
+    initindexes = indexes[:-1]
     level = l
-    for i in initindices:
+    for i in initindexes:
         level = level[i]
     level[lastindex] = value
