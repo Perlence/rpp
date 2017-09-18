@@ -59,7 +59,7 @@ To change the value of an item, do the following:
 
    >>> rpp.update(r, [1], ('RIPPLE', 1))
    >>> r
-   (('REAPER_PROJECT', 0.1, '4.32', 1372525904), ('RIPPLE', 1), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1))
+   [('REAPER_PROJECT', 0.1, '4.32', 1372525904), ('RIPPLE', 1), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1)]
 
 
 Dependencies
