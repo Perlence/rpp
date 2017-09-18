@@ -46,24 +46,24 @@ t_CLOSE = r'>'
 
 
 def t_FORMAT(t):
-    r"(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK|MIDI)(?=\s+)"
+    r"(WAV|AIFF|APE|DDP|FLAC|MP3|OGG|WAVPACK|MIDI)(?=[ \t\n<>]+)"
     t.value = Format(t.value)
     return t
 
 
 def t_NAME(t):
-    r"[A-Z][A-Z0-9_]*(?=\s+)"
+    r"[A-Z][A-Z0-9_]*(?=[ \t\n<>]+)"
     return t
 
 
 def t_UUID(t):
-    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=\s+)"
+    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=[ \t\n<>]+)"
     t.value = UUID(t.value.strip("'"))
     return t
 
 
 def t_STRING(t):
-    r'(?:"([^"]*)")|(?:\'([^\']*)\')(?=\s+)'
+    r'(?:"([^"]*)")|(?:\'([^\']*)\')(?=[ \t\n<>]+)'
     if t.value[0] == '"':
         t.value = t.value.strip('"')
     else:
@@ -72,19 +72,19 @@ def t_STRING(t):
 
 
 def t_FLOAT(t):
-    r"-?\d+\.\d+(?=\s+)"
+    r"-?\d+\.\d+(?=[ \t\n<>]+)"
     t.value = Decimal(t.value)
     return t
 
 
 def t_INT(t):
-    r"-?\d+(?=\s+)"
+    r"-?\d+(?=[ \t\n<>]+)"
     t.value = int(t.value)
     return t
 
 
 def t_NULL(t):
-    r"-(?=\s+)"
+    r"-(?=[ \t\n<>]+)"
     t.value = None
     return t
 
