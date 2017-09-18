@@ -23,8 +23,9 @@ def update(l, indexes, value):
     :param indexes: list of indexes
     :param value: new value
     """
-    lastindex = indexes.pop(-1)
+    lastindex = indexes[-1]
+    initindices = indexes[:-1]
     level = l
-    for i in indexes:
+    for i in initindices:
         level = level[i]
     level[lastindex] = value
