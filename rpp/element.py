@@ -4,11 +4,11 @@ import attr
 @attr.s
 class Element:
     name = attr.ib()
-    tuple = attr.ib(default=())
+    attrs = attr.ib(default=())
     items = attr.ib(default=None)
 
     def findall(self, name):
-        """Find all elements that have given name."""
+        """Find all elements recursively that have given name."""
         for item in self.items:
             if not isinstance(item, Element):
                 continue
@@ -18,5 +18,5 @@ class Element:
                 yield subitem
 
     def find(self, name):
-        """Find first element that have given name."""
+        """Find first element recursively that have given name."""
         return next(self.findall(name), None)

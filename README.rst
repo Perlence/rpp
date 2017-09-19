@@ -30,10 +30,10 @@ Decode RPP:
    >
    """)
    >>> r
-   Element(name='REAPER_PROJECT', tuple=(Decimal('0.1'), '4.32', 1372525904), items=[
-       Element(name='RIPPLE', tuple=(0,), items=None),
-       Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None),
-       Element(name='AUTOXFADE', tuple=(1,), items=None)
+   Element(name='REAPER_PROJECT', attrs=(Decimal('0.1'), '4.32', 1372525904), items=[
+       Element(name='RIPPLE', attrs=(0,), items=None),
+       Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None),
+       Element(name='AUTOXFADE', attrs=(1,), items=None)
    ])
 
 Transform lists into RPP:
@@ -43,11 +43,11 @@ Transform lists into RPP:
    >>> from decimal import Decimal
    >>> from rpp import Element
    >>> rpp.dumps(
-   Element(name='REAPER_PROJECT', tuple=(Decimal('0.1'), '4.32', 1372525904), items=[
-       Element(name='RIPPLE', tuple=(0,), items=None),
-       Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None),
-       Element(name='AUTOXFADE', tuple=(1,), items=None)
-   ]))
+   ...     Element(name='REAPER_PROJECT', attrs=(Decimal('0.1'), '4.32', 1372525904), items=[
+   ...         Element(name='RIPPLE', attrs=(0,), items=None),
+   ...         Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None),
+   ...         Element(name='AUTOXFADE', attrs=(1,), items=None),
+   ...     ]))
    '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
 
 You can also perform some quering operations:
@@ -55,7 +55,7 @@ You can also perform some quering operations:
 .. code-block:: python
 
    >>> r.find('GROUPOVERRIDE')
-   Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None)
+   Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None)
 
 
 Dependencies

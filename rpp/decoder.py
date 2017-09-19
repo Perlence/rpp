@@ -1,4 +1,3 @@
-import attr
 from ply import yacc
 
 from .element import Element
@@ -10,7 +9,7 @@ def p_tree(t):
             | OPEN root items CLOSE"""
     t[0] = t[2]
     if len(t) > 4:
-        t[0] = attr.evolve(t[0], items=t[3])
+        t[0].items = items
 
 
 def p_root(t):
@@ -18,7 +17,7 @@ def p_root(t):
             | STRING tuple newline"""
     t[0] = Element(t[1], items=[])
     if len(t) > 3:
-        t[0] = attr.evolve(t[0], tuple=t[2])
+        t[0].attrs = t[2]
 
 
 def p_items(t):

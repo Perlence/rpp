@@ -12,20 +12,20 @@ def encode(element, indent=2, level=0):
         result += encode_tuple(element) + '\n'
     elif isinstance(element, Element):
         if element.items is None:
-            result += encode_name_and_tuple(element)
+            result += encode_name_and_attrs(element)
         else:
             result += '<'
-            result += encode_name_and_tuple(element)
+            result += encode_name_and_attrs(element)
             for item in element.items:
                 result += encode(item, level=level+1)
             result += ' ' * level * indent + '>\n'
     return result
 
 
-def encode_name_and_tuple(element):
+def encode_name_and_attrs(element):
     result = element.name
-    if element.tuple:
-        result += ' ' + encode_tuple(element.tuple)
+    if element.attrs:
+        result += ' ' + encode_tuple(element.attrs)
     result += '\n'
     return result
 
