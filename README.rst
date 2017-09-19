@@ -30,32 +30,33 @@ Decode RPP:
    >
    """)
    >>> r
-   Element(name='REAPER_PROJECT', attrs=(Decimal('0.1'), '4.32', 1372525904), items=[
-       Element(name='RIPPLE', attrs=(0,), items=None),
-       Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None),
-       Element(name='AUTOXFADE', attrs=(1,), items=None)
+   Element(tag='REAPER_PROJECT', attrib=(Decimal('0.1'), '4.32', 1372525904), children=[
+       Element(tag='RIPPLE', attrib=(0,), children=None),
+       Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None),
+       Element(tag='AUTOXFADE', attrib=(1,), children=None)
    ])
 
-Transform lists into RPP:
+Transform elements into RPP:
 
 .. code-block:: python
 
    >>> from decimal import Decimal
    >>> from rpp import Element
    >>> rpp.dumps(
-   ...     Element(name='REAPER_PROJECT', attrs=(Decimal('0.1'), '4.32', 1372525904), items=[
-   ...         Element(name='RIPPLE', attrs=(0,), items=None),
-   ...         Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None),
-   ...         Element(name='AUTOXFADE', attrs=(1,), items=None),
+   ...     Element(tag='REAPER_PROJECT', attrib=(Decimal('0.1'), '4.32', 1372525904), children=[
+   ...         Element(tag='RIPPLE', attrib=(0,), children=None),
+   ...         Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None),
+   ...         Element(tag='AUTOXFADE', attrib=(1,), children=None),
    ...     ]))
    '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
 
-You can also perform some quering operations:
+``Element`` mimics the interface of ``xml.etree.ElementTree.Element``. You can perform quering operations with
+``findall``, ``find``, ``iterfind``:
 
 .. code-block:: python
 
-   >>> r.find('GROUPOVERRIDE')
-   Element(name='GROUPOVERRIDE', attrs=(0, 0, 0), items=None)
+   >>> r.find('.//GROUPOVERRIDE')
+   Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None)
 
 
 Dependencies

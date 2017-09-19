@@ -51,7 +51,8 @@ def test_loads():
             Decimal('0.000000'), Decimal('0.000000'), None, None, None, None, None,
         )]),
     ])
-    assert attr.astuple(loads(src)) == attr.astuple(expected)
+    actual = loads(src)
+    assert attr.astuple(actual) == attr.astuple(expected)
 
 
 def test_tostr():
@@ -89,6 +90,7 @@ def test_conversion():
     with open(path.join(DIR, '..', 'data', 'vst.RPP')) as fp:
         raw_proj = fp.read()
     proj = loads(raw_proj)
+
     raw_proj2 = dumps(proj)
     with open(path.join(DIR, '..', 'data', 'vst2.RPP'), 'w') as fp:
         fp.write(raw_proj2)

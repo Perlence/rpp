@@ -9,15 +9,15 @@ def p_tree(t):
             | OPEN root items CLOSE"""
     t[0] = t[2]
     if len(t) > 4:
-        t[0].items = items
+        t[0].extend(t[3])
 
 
 def p_root(t):
     """root : STRING newline
             | STRING tuple newline"""
-    t[0] = Element(t[1], items=[])
+    t[0] = Element(t[1], children=[])
     if len(t) > 3:
-        t[0].attrs = t[2]
+        t[0].attrib = t[2]
 
 
 def p_items(t):

@@ -11,21 +11,21 @@ def encode(element, indent=2, level=0):
     elif isinstance(element, tuple):
         result += encode_tuple(element) + '\n'
     elif isinstance(element, Element):
-        if element.items is None:
-            result += encode_name_and_attrs(element)
+        if not element.has_subelements():
+            result += encode_tag_and_attrib(element)
         else:
             result += '<'
-            result += encode_name_and_attrs(element)
-            for item in element.items:
+            result += encode_tag_and_attrib(element)
+            for item in element:
                 result += encode(item, level=level+1)
             result += ' ' * level * indent + '>\n'
     return result
 
 
-def encode_name_and_attrs(element):
-    result = element.name
-    if element.attrs:
-        result += ' ' + encode_tuple(element.attrs)
+def encode_tag_and_attrib(element):
+    result = element.tag
+    if element.attrib:
+        result += ' ' + encode_tuple(element.attrib)
     result += '\n'
     return result
 
