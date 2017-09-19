@@ -1,39 +1,66 @@
-from .scanner import Symbol, Format, Decimal, UUID
+from decimal import Decimal
+from uuid import UUID
+
+from .decoder import Element
+
+
+def encode(element, indent=2, level=0):
+    result = ' ' * level * indent
+    if isinstance(element, str):
+        result += element + '\n'
+    elif isinstance(element, tuple):
+        result += encode_tuple(element) + '\n'
+    elif isinstance(element, Element):
+        if element.items is None:
+            result += encode_name_and_tuple(element)
+        else:
+            result += '<'
+            result += encode_name_and_tuple(element)
+            for item in element.items:
+                result += encode(item, level=level+1)
+            result += ' ' * level * indent + '>\n'
+    return result
+
+
+def encode_name_and_tuple(element):
+    result = element.name
+    if element.tuple:
+        result += ' ' + encode_tuple(element.tuple)
+    result += '\n'
+    return result
+
+
+def encode_tuple(tup):
+    return ' '.join(map(tostr, tup))
 
 
 def tostr(value):
-    if isinstance(value, (Symbol, Format)):
-        return str(value)
-    elif isinstance(value, str):
-        return '"%s"' % value
+    if isinstance(value, str):
+        return escape_str(value)
     elif isinstance(value, Decimal):
         return format(value, 'f')
     elif isinstance(value, UUID):
-        return '{%s}' % str(value).upper()
+        return '{{{}}}'.format(str(value).upper())
     elif value is None:
         return '-'
     else:
         return str(value)
 
 
-def encode(lists, indent=2, level=0):
-    result = '<'
-    for i, item in enumerate(lists):
-        if not isinstance(item, (list, tuple)):
-            raise TypeError('{!r} is not RPP serializable'.format(item))
-        if i > 0:
-            result += ' ' * (level + 1) * indent
-        if all(not isinstance(x, tuple) for x in item):
-            name, values = item[0].upper(), item[1:]
-            strvalues = map(tostr, values)
-            result += name
-            for value, strvalue in zip(values, strvalues):
-                if isinstance(value, Symbol):
-                    result += '\n' + (' ' * (level + 1) * indent) + strvalue
-                else:
-                    result += ' ' + strvalue
-        else:
-            result += encode(item, level=(level + 1))
-        result += '\n'
-    result += (' ' * level * indent) + '>'
-    return result
+def escape_str(value):
+    if not value:
+        return '""'
+
+    should_escape = (' ', '\t', '"', "'", '`')
+    if all(ch not in should_escape for ch in value):
+        return value
+
+    quote = '"'
+    if '"' in value:
+        quote = "'"
+    if "'" in value:
+        quote = '`'
+    if '`' in value:
+        quote = '`'
+        value = value.replace('`', "'")
+    return '{quote}{value}{quote}'.format(quote=quote, value=value)

@@ -30,42 +30,39 @@ Decode RPP:
    >
    """)
    >>> r
-   [('REAPER_PROJECT', Decimal(0.1), '4.32', 1372525904), ('RIPPLE', 0), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1)]
+   Element(name='REAPER_PROJECT', tuple=(Decimal('0.1'), '4.32', 1372525904), items=[
+       Element(name='RIPPLE', tuple=(0,), items=None),
+       Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None),
+       Element(name='AUTOXFADE', tuple=(1,), items=None)
+   ])
 
 Transform lists into RPP:
 
 .. code-block:: python
 
+   >>> from decimal import Decimal
+   >>> from rpp import Element
    >>> rpp.dumps(
-   [('REAPER_PROJECT', 0.1, '4.32', 1372525904),
-    ('RIPPLE', 0),
-    ('GROUPOVERRIDE', 0, 0, 0),
-    ('AUTOXFADE', 1)
-   ])
-   '<REAPER_PROJECT 0.1 "4.32" 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>'
+   Element(name='REAPER_PROJECT', tuple=(Decimal('0.1'), '4.32', 1372525904), items=[
+       Element(name='RIPPLE', tuple=(0,), items=None),
+       Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None),
+       Element(name='AUTOXFADE', tuple=(1,), items=None)
+   ]))
+   '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
 
 You can also perform some quering operations:
 
 .. code-block:: python
 
-   >>> rpp.find(r, 'GROUPOVERRIDE')
-   ((2,), ('GROUPOVERRIDE', 0, 0, 0))
-
-The result is a tuple with first element as tuple of tree indexes and second as the found value.
-
-To change the value of an item, do the following:
-
-.. code-block:: python
-
-   >>> rpp.update(r, [1], ('RIPPLE', 1))
-   >>> r
-   [('REAPER_PROJECT', 0.1, '4.32', 1372525904), ('RIPPLE', 1), ('GROUPOVERRIDE', 0, 0, 0), ('AUTOXFADE', 1)]
+   >>> r.find('GROUPOVERRIDE')
+   Element(name='GROUPOVERRIDE', tuple=(0, 0, 0), items=None)
 
 
 Dependencies
 ------------
 
-- ply
+- `attrs <https://attrs.readthedocs.org/>`_
+- `ply <http://www.dabeaz.com/ply/>`_
 
 
 License

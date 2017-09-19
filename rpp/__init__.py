@@ -1,18 +1,20 @@
-r"""RPP is a format used to describe REAPER <http://reaper.fm> projects."""
+"""RPP is a format used to describe REAPER <http://reaper.fm> projects."""
 
-from .scanner import Symbol
-from .decoder import yacc  # noqa
-from .encoder import encode  # noqa
-from .helpers import findall, find, update  # noqa
+from ply import yacc
+
+from . import scanner
+from .decoder import Element
+from .encoder import encode
 
 
 __version__ = '0.1'
-__all__ = ['dump', 'dumps', 'load', 'loads', 'RPP', 'Symbol']
+__all__ = ['dump', 'dumps', 'load', 'loads', 'Element']
 __author__ = 'Sviatoslav Abakumov <dust.harvesting@gmail.com>'
 
 
 def loads(string):
-    return yacc.parse(string)
+    lexer = scanner.lexer()
+    return yacc.parse(string.strip(), lexer)
 
 
 def load(fp):

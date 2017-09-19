@@ -1,11 +1,24 @@
+import attr
 from ply import yacc
 
-from .scanner import Hex, tokens  # noqa
+from .element import Element
+from .scanner import tokens  # noqa
 
 
 def p_tree(t):
-    """tree : OPEN items CLOSE"""
+    """tree : OPEN root CLOSE
+            | OPEN root items CLOSE"""
     t[0] = t[2]
+    if len(t) > 4:
+        t[0] = attr.evolve(t[0], items=t[3])
+
+
+def p_root(t):
+    """root : STRING newline
+            | STRING tuple newline"""
+    t[0] = Element(t[1], items=[])
+    if len(t) > 3:
+        t[0] = attr.evolve(t[0], tuple=t[2])
 
 
 def p_items(t):
@@ -18,23 +31,21 @@ def p_items(t):
         t[0] += t[2]
 
 
-def p_item_novalue(t):
-    """item : NAME"""
-    t[0] = (t[1],)
+def p_item_element(t):
+    """item : STRING tuple newline"""
+    t[0] = Element(t[1], t[2])
 
 
 def p_item_tuple(t):
-    """item : NAME tuple"""
-    if t[1] == 'E':
-        int_, hexes = t[2][0], t[2][1:]
-        hexes = tuple(Hex(str(x)) for x in hexes)
-        t[0] = (t[1], int_) + hexes
+    """item : tuple newline"""
+    if len(t[1]) == 1:
+        t[0] = t[1][0]
     else:
-        t[0] = (t[1],) + t[2]
+        t[0] = t[1]
 
 
 def p_item_tree(t):
-    """item : tree"""
+    """item : tree newline"""
     t[0] = t[1]
 
 
@@ -53,9 +64,7 @@ def p_value(t):
              | INT
              | FLOAT
              | STRING
-             | UUID
-             | SYMBOL
-             | FORMAT"""
+             | UUID"""
     t[0] = t[1]
 
 
@@ -64,4 +73,4 @@ def p_error(t):
     raise ValueError(message)
 
 
-yacc.yacc(optimize=True, debug=False, write_tables=False)
+yacc.yacc(optimize=True, debug=False, write_tables=True)
