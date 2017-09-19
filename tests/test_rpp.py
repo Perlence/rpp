@@ -68,7 +68,7 @@ def test_tostr():
 def test_dumps():
     src = Element('ENTRY', (1, 2, 3), [
         Element('RIPPLE', (0,)),
-        Element('SUBFOLDER', ('',), []),
+        Element('Subfolder', ('',), []),
         Element('RECORD_CFG', (), []),
         'AAAQAAAA',
     ])
