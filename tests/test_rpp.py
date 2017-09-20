@@ -5,7 +5,16 @@ import attr
 import pytest
 
 from rpp import Element, loads, dumps
+from rpp.scanner import Lexer
 from rpp.encoder import tostr
+
+
+def test_scanner():
+    lex = Lexer()
+    lex.input('<REAPER - 5 05 0.5 "4.32"\n>')
+    assert [tok.type for tok in lex] == [
+        'OPEN', 'STRING', 'NULL', 'INT', 'STRING', 'FLOAT', 'STRING', 'NEWLINE', 'CLOSE', 'NEWLINE',
+    ]
 
 
 def test_loads():
@@ -33,6 +42,9 @@ def test_loads():
   >
   NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
   NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
+  NAME <
+  NAME >
+  NAME <>
   VERSION 4.32
 >"""
     expected = Element('REAPER_PROJECT', (Decimal('0.1'), '4.32', 1372525904), [
@@ -56,6 +68,9 @@ def test_loads():
         )]),
         Element('NAME', ('09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',)),
         Element('NAME', ('09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~',)),
+        Element('NAME', ('<',)),
+        Element('NAME', ('>',)),
+        Element('NAME', ('<>',)),
         Element('VERSION', (Decimal('4.32'),)),
     ])
     actual = loads(src)

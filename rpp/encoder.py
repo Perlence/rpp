@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from .element import Element
-from .scanner import tokenize
+from .scanner import tokenize, starts_with_quote
 
 
 def encode(element, indent=2, level=0):
@@ -56,11 +56,6 @@ def quote_string(value):
 
 def should_quote(s):
     return starts_with_quote(s) or has_whitespace(s) or looks_like_null_int_float(s)
-
-
-def starts_with_quote(s):
-    quotes = '"\'`'
-    return s[0] in quotes
 
 
 def has_whitespace(s):

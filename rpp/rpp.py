@@ -6,7 +6,7 @@ from .encoder import encode
 def loads(string):
     lexer = scanner.lexer()
     yacc = parser()
-    return yacc.parse(string.strip(), lexer)
+    return yacc.parse(string, lexer)
 
 
 def load(fp):
