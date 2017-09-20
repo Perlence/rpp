@@ -33,25 +33,25 @@ t_CLOSE = r'>'
 
 
 def t_NULL(t):
-    r"-(?=[ \t\n<>]+)"
+    r"-(?=[ \t\n\r])"
     t.value = None
     return t
 
 
 def t_INT(t):
-    r"-?([0-9]|[1-9][0-9]+)(?=[ \t\n<>]+)"
+    r"-?([0-9]|[1-9][0-9]+)(?=[ \t\n\r])"
     t.value = int(t.value)
     return t
 
 
 def t_FLOAT(t):
-    r"-?\d+\.\d+(?=[ \t\n<>]+)"
+    r"-?\d+\.\d+(?=[ \t\n\r])"
     t.value = Decimal(t.value)
     return t
 
 
 def t_STRING(t):
-    r'("([^"]*")|\'([^\']*)\'|`([^`]*)"|[a-zA-Z0-9{}_+-/:=.]+)(?=[ \t\n<>]+)'
+    r'("[^"]*"|\'[^\']*\'|`[^`]*`|[^ \t\n\r<>][^ \t\n\r]*)(?=[ \t\n\r])'
     if t.value[0] == '"':
         t.value = t.value.strip('"')
     elif t.value[0] == "'":

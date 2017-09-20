@@ -26,10 +26,13 @@ def test_loads():
   >
   <SOURCE MIDI
     E 3840 b0 7b 00
+    e 3840 b0 7b 00
   >
   <JS loser/3BandEQ ""
     0.000000 200.000000 0.000000 2000.000000 0.000000 0.000000 - - - - -
   >
+  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
 >"""
     expected = Element('REAPER_PROJECT', (Decimal('0.1'), '4.32', 1372525904), [
         Element('RIPPLE', (0,)),
@@ -44,18 +47,22 @@ def test_loads():
         ]),
         Element('SOURCE', ('MIDI',), [
             Element('E', (3840, 'b0', '7b', '00')),
+            Element('e', (3840, 'b0', '7b', '00')),
         ]),
         Element('JS', ('loser/3BandEQ', ''), [(
             Decimal('0.000000'), Decimal('200.000000'), Decimal('0.000000'), Decimal('2000.000000'),
             Decimal('0.000000'), Decimal('0.000000'), None, None, None, None, None,
         )]),
+        Element('NAME', ('09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',)),
+        Element('NAME', ('09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~',)),
     ])
     actual = loads(src)
-    assert attr.astuple(actual) == attr.astuple(expected)
+    assert attr.asdict(actual) == attr.asdict(expected)
 
 
 def test_tostr():
     assert tostr('') == '""'
+    assert tostr('"hey') == "'\"hey'"
     assert tostr('Track') == 'Track'
     assert tostr('Track 1') == '"Track 1"'
     assert tostr('Track "1"') == '\'Track "1"\''
@@ -69,6 +76,8 @@ def test_dumps():
         Element('RIPPLE', (0,)),
         Element('SUBFOLDER', ('',), []),
         Element('RECORD_CFG', (), []),
+        Element('NAME', ('09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',)),
+        Element('NAME', ('09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~',)),
         'AAAQAAAA',
     ])
     expected = """\
@@ -78,6 +87,8 @@ def test_dumps():
   >
   <RECORD_CFG
   >
+  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
   AAAQAAAA
 >\n"""
     assert dumps(src) == expected

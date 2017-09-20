@@ -48,8 +48,8 @@ def escape_str(value):
     if not value:
         return '""'
 
-    should_escape = (' ', '\t', '"', "'", '`')
-    if all(ch not in should_escape for ch in value):
+    whitespace = ' \t'
+    if not starts_with_quote(value) and all(ch not in whitespace for ch in value):
         return value
 
     quote = '"'
@@ -61,3 +61,8 @@ def escape_str(value):
         quote = '`'
         value = value.replace('`', "'")
     return '{quote}{value}{quote}'.format(quote=quote, value=value)
+
+
+def starts_with_quote(s):
+    quotes = '"\'`'
+    return s[0] in quotes
