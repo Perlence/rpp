@@ -22,10 +22,13 @@
 #    distribution.
 
 from distutils.core import setup
-import rpp
+# rpp attempts to load ply via scanner.py which fails because ply hasn't been installed yet.
+# from rpp import __version__
 
 setup(name='rpp',
-      version=rpp.__version__,
+      # For now, we hardwire the version until we figure out how to avoid the circular reference to ply.
+      # version=__version__,
+      version='0.3',
       description='REAPER Project File Parser',
       author='Sviatoslav Abakumov',
       author_email='dust.harvesting@gmail.com',
@@ -33,6 +36,5 @@ setup(name='rpp',
       url='https://bitbucket.org/Perlence/rpp/src',
       packages=['rpp'],
       package_dir={'rpp': 'rpp'},
-      install_requires=['ply'],
-      requires=['ply'],
+      install_requires=['ply==3.9']
       )
