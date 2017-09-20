@@ -85,7 +85,7 @@ def test_dumps():
 
 def test_conversion():
     DIR = path.dirname(__file__)
-    with open(path.join(DIR, '..', 'data', 'vst.RPP')) as fp:
+    with open(path.join(DIR, 'data', 'vst.RPP')) as fp:
         raw_proj = fp.read()
 
     # Allow some differences
