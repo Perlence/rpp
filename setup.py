@@ -6,7 +6,7 @@ setup(
     description='REAPER Project File Parser',
     author='Sviatoslav Abakumov',
     author_email='dust.harvesting@gmail.com',
-    license='zlib',
+    license='BSD',
     url='https://github.com/Perlence/rpp',
     packages=['rpp'],
     install_requires=[
