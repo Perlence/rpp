@@ -1,5 +1,4 @@
 from decimal import Decimal
-from uuid import UUID
 
 from .element import Element
 
@@ -39,8 +38,6 @@ def tostr(value):
         return escape_str(value)
     elif isinstance(value, Decimal):
         return format(value, 'f')
-    elif isinstance(value, UUID):
-        return '{{{}}}'.format(str(value).upper())
     elif value is None:
         return '-'
     else:

@@ -1,4 +1,3 @@
-from uuid import UUID
 from decimal import Decimal
 
 from ply import lex
@@ -51,14 +50,8 @@ def t_FLOAT(t):
     return t
 
 
-def t_UUID(t):
-    r"\{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}(?=[ \t\n<>]+)"
-    t.value = UUID(t.value.strip("'"))
-    return t
-
-
 def t_STRING(t):
-    r'("([^"]*")|\'([^\']*)\'|`([^`]*)"|[a-zA-Z0-9_+-/:=.]+)(?=[ \t\n<>]+)'
+    r'("([^"]*")|\'([^\']*)\'|`([^`]*)"|[a-zA-Z0-9{}_+-/:=.]+)(?=[ \t\n<>]+)'
     if t.value[0] == '"':
         t.value = t.value.strip('"')
     elif t.value[0] == "'":

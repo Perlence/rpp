@@ -1,8 +1,8 @@
 from decimal import Decimal
 from os import path
-from uuid import UUID
 
 import attr
+import pytest
 
 from rpp import Element, loads, dumps
 from rpp.encoder import tostr
@@ -61,7 +61,7 @@ def test_tostr():
     assert tostr('Track "1"') == '\'Track "1"\''
     assert tostr('Track "1" \'2\'') == '`Track "1" \'2\'`'
     assert tostr('Track "1" \'2\' `3`') == '`Track "1" \'2\' \'3\'`'
-    assert tostr(UUID('010F6508-D16E-4DA0-BE44-E8F3C39D6314')) == '{010F6508-D16E-4DA0-BE44-E8F3C39D6314}'
+    assert tostr('{010F6508-D16E-4DA0-BE44-E8F3C39D6314}') == '{010F6508-D16E-4DA0-BE44-E8F3C39D6314}'
 
 
 def test_dumps():
@@ -83,14 +83,23 @@ def test_dumps():
     assert dumps(src) == expected
 
 
-def test_conversion():
+@pytest.mark.parametrize('filename', [
+    'empty.RPP',
+    'vst.RPP',
+])
+def test_conversion(filename):
     DIR = path.dirname(__file__)
-    with open(path.join(DIR, 'data', 'vst.RPP')) as fp:
+    with open(path.join(DIR, 'data', filename)) as fp:
         raw_proj = fp.read()
 
     # Allow some differences
     raw_proj = (raw_proj
+                .replace('"4.32"', '4.32')
                 .replace('"5.50c"', '5.50c')
+                .replace('"audio/"', 'audio/')
+                .replace("'{1EB4F5A8-25D1-43CA-91D1-F1CA4ED005ED}'", '{1EB4F5A8-25D1-43CA-91D1-F1CA4ED005ED}')
+                .replace("'{35FAE399-C558-4F4A-903F-4FF6F0470B4D}'", '{35FAE399-C558-4F4A-903F-4FF6F0470B4D}')
+                .replace('"Trackk"', 'Trackk')
                 .replace("''", '""')
                 .replace('- \n', '-\n'))
 
