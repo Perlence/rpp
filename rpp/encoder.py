@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from .element import Element
+from .scanner import tokenize
 
 
 def encode(element, indent=2, level=0):
@@ -35,7 +36,7 @@ def encode_tuple(tup):
 
 def tostr(value):
     if isinstance(value, str):
-        return escape_str(value)
+        return quote_string(value)
     elif isinstance(value, Decimal):
         return format(value, 'f')
     elif value is None:
@@ -44,25 +45,41 @@ def tostr(value):
         return str(value)
 
 
-def escape_str(value):
+def quote_string(value):
     if not value:
         return '""'
-
-    whitespace = ' \t'
-    if not starts_with_quote(value) and all(ch not in whitespace for ch in value):
+    if not should_quote(value):
         return value
-
-    quote = '"'
-    if '"' in value:
-        quote = "'"
-    if "'" in value:
-        quote = '`'
-    if '`' in value:
-        quote = '`'
-        value = value.replace('`', "'")
+    quote, value = quote_mark(value)
     return '{quote}{value}{quote}'.format(quote=quote, value=value)
+
+
+def should_quote(s):
+    return starts_with_quote(s) or has_whitespace(s) or looks_like_null_int_float(s)
 
 
 def starts_with_quote(s):
     quotes = '"\'`'
     return s[0] in quotes
+
+
+def has_whitespace(s):
+    whitespace = ' \t'
+    return any(ch in whitespace for ch in s)
+
+
+def looks_like_null_int_float(s):
+    (token, *etc) = tokenize(s + ' ')
+    return token.type in ('NULL', 'INT', 'FLOAT')
+
+
+def quote_mark(s):
+    quote = '"'
+    if '"' in s:
+        quote = "'"
+    if "'" in s:
+        quote = '`'
+    if '`' in s:
+        quote = '`'
+        s = s.replace('`', "'")
+    return quote, s

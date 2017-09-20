@@ -33,6 +33,7 @@ def test_loads():
   >
   NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
   NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
+  VERSION 4.32
 >"""
     expected = Element('REAPER_PROJECT', (Decimal('0.1'), '4.32', 1372525904), [
         Element('RIPPLE', (0,)),
@@ -55,6 +56,7 @@ def test_loads():
         )]),
         Element('NAME', ('09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',)),
         Element('NAME', ('09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~',)),
+        Element('VERSION', (Decimal('4.32'),)),
     ])
     actual = loads(src)
     assert attr.asdict(actual) == attr.asdict(expected)
@@ -78,6 +80,7 @@ def test_dumps():
         Element('RECORD_CFG', (), []),
         Element('NAME', ('09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',)),
         Element('NAME', ('09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~',)),
+        Element('VERSION', ('4.32',)),
         'AAAQAAAA',
     ])
     expected = """\
@@ -89,6 +92,7 @@ def test_dumps():
   >
   NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
   NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
+  VERSION "4.32"
   AAAQAAAA
 >\n"""
     assert dumps(src) == expected
@@ -105,7 +109,6 @@ def test_conversion(filename):
 
     # Allow some differences
     raw_proj = (raw_proj
-                .replace('"4.32"', '4.32')
                 .replace('"5.50c"', '5.50c')
                 .replace('"audio/"', 'audio/')
                 .replace("'{1EB4F5A8-25D1-43CA-91D1-F1CA4ED005ED}'", '{1EB4F5A8-25D1-43CA-91D1-F1CA4ED005ED}')
@@ -114,4 +117,7 @@ def test_conversion(filename):
                 .replace("''", '""')
                 .replace('- \n', '-\n'))
 
-    assert dumps(loads(raw_proj)) == raw_proj
+    proj = loads(raw_proj)
+    raw_proj2 = dumps(proj)
+    assert raw_proj2 == raw_proj
+    assert loads(raw_proj2) == proj
