@@ -23,7 +23,7 @@ def encode(element, indent=2, level=0):
 
 
 def encode_tag_and_attrib(element):
-    result = element.tag.upper()
+    result = element.tag
     if element.attrib:
         result += ' ' + encode_tuple(element.attrib)
     result += '\n'
