@@ -1,7 +1,7 @@
 from decimal import Decimal
 from uuid import UUID
 
-from .decoder import Element
+from .element import Element
 
 
 def encode(element, indent=2, level=0):

@@ -4,6 +4,10 @@ from .element import Element
 from .scanner import tokens  # noqa
 
 
+def parser():
+    return yacc.yacc(optimize=True, debug=False, write_tables=True)
+
+
 def p_tree(t):
     """tree : OPEN root CLOSE
             | OPEN root items CLOSE"""
@@ -70,6 +74,3 @@ def p_value(t):
 def p_error(t):
     message = "Syntax error at line %d, token=%s" % (t.lineno or 0, t.type)
     raise ValueError(message)
-
-
-yacc.yacc(optimize=True, debug=False, write_tables=True)
