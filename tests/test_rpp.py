@@ -3,7 +3,6 @@ from os import path
 from uuid import UUID
 
 import attr
-import pytest
 
 from rpp import Element, loads, dumps
 from rpp.encoder import tostr
@@ -84,14 +83,15 @@ def test_dumps():
     assert dumps(src) == expected
 
 
-@pytest.mark.skip
 def test_conversion():
     DIR = path.dirname(__file__)
     with open(path.join(DIR, '..', 'data', 'vst.RPP')) as fp:
         raw_proj = fp.read()
-    proj = loads(raw_proj)
 
-    raw_proj2 = dumps(proj)
-    with open(path.join(DIR, '..', 'data', 'vst2.RPP'), 'w') as fp:
-        fp.write(raw_proj2)
-    assert raw_proj2 == raw_proj
+    # Allow some differences
+    raw_proj = (raw_proj
+                .replace('"5.50c"', '5.50c')
+                .replace("''", '""')
+                .replace('- \n', '-\n'))
+
+    assert dumps(loads(raw_proj)) == raw_proj
