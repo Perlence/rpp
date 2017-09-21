@@ -7,69 +7,100 @@ import attr
 class Element:
     tag = attr.ib()
     attrib = attr.ib(default=())
-    children = attr.ib(default=None)
-
-    def has_subelements(self):
-        return self.children is not None
+    children = attr.ib(default=attr.Factory(list))
 
     def append(self, element):
-        self._ensure_children_list()
         self.children.append(element)
 
     def extend(self, elements):
-        self._ensure_children_list()
         self.children.extend(elements)
 
     def insert(self, index, element):
-        self._ensure_children_list()
         self.children.insert(index, element)
 
     def remove(self, element):
-        self._ensure_children_list()
         self.children.remove(element)
 
-    def findall(self, match):
-        return xml.etree.ElementPath.findall(self, match)
+    def findall(self, path):
+        return list(self.iterfind(path))
 
-    def find(self, match):
-        return xml.etree.ElementPath.find(self, match)
+    def find(self, path):
+        return next(self.iterfind(path), None)
 
-    def iterfind(self, match):
-        return xml.etree.ElementPath.iterfind(self, match)
+    def iterfind(self, path):
+        queryable_element = QueryableElement(self)
+        found = xml.etree.ElementPath.iterfind(queryable_element, path)
+        for item in found:
+            if isinstance(item, ListBackedElement):
+                yield item.list
+            else:
+                yield item
+
+    def iter(self, tag=None):
+        return iterate_element(self, tag)
+
+    def __iter__(self):
+        return iter(self.children)
+
+    def __getitem__(self, index):
+        return self.children[index]
+
+    def __setitem__(self, index, element):
+        self.children[index] = element
+
+    def __len__(self):
+        return len(self.children)
+
+
+@attr.s
+class QueryableElement:
+    element = attr.ib()
+
+    @property
+    def tag(self):
+        return self.element.tag
+
+    def iter(self, tag=None):
+        return iterate_element(self, tag)
+
+    def __iter__(self):
+        for item in self.element:
+            if isinstance(item, Element):
+                yield QueryableElement(item)
+            elif isinstance(item, list):
+                yield ListBackedElement(item)
+
+    def __len__(self):
+        return len(self.element)
+
+
+@attr.s
+class ListBackedElement:
+    list = attr.ib()
+
+    @property
+    def tag(self):
+        return self.list[0]
 
     def iter(self, tag=None):
         if tag is None or self.tag == tag:
             yield self
-        if not len(self):
-            return
-        for item in self:
-            if not isinstance(item, Element):
-                if tag is None:
-                    yield item
-                continue
-            for subitem in item.iter(tag):
-                yield subitem
 
     def __iter__(self):
-        if not self.has_subelements():
-            return iter(())
-        return iter(self.children)
-
-    def __getitem__(self, index):
-        if not self.has_subelements():
-            raise IndexError('there are no subelements')
-        return self.children[index]
-
-    def __setitem__(self, index, element):
-        self._ensure_children_list()
-        self.children[index] = element
+        return iter(())
 
     def __len__(self):
-        if not self.has_subelements():
-            return 0
-        return len(self.children)
+        return 0
 
-    def _ensure_children_list(self):
-        if self.has_subelements():
-            return
-        self.children = []
+
+def iterate_element(element, tag):
+    if tag is None or element.tag == tag:
+        yield element
+    if not len(element):
+        return
+    for item in element:
+        if hasattr(item, 'iter'):
+            for subitem in item.iter(tag):
+                yield subitem
+        elif tag is None:
+            yield item

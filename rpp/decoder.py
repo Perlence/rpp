@@ -5,7 +5,7 @@ from .scanner import tokens  # noqa
 
 
 def parser():
-    return yacc.yacc(optimize=True, debug=False, write_tables=True)
+    return yacc.yacc(optimize=True, debug=False, write_tables=False)
 
 
 def p_tree(t):
@@ -17,11 +17,10 @@ def p_tree(t):
 
 
 def p_root(t):
-    """root : STRING NEWLINE
-            | STRING tuple NEWLINE"""
-    t[0] = Element(t[1], children=[])
-    if len(t) > 3:
-        t[0].attrib = t[2]
+    """root : list NEWLINE"""
+    t[0] = Element(t[1][0], children=[])
+    if len(t) > 2:
+        t[0].attrib = t[1][1:]
 
 
 def p_items(t):
@@ -34,13 +33,8 @@ def p_items(t):
         t[0] += t[2]
 
 
-def p_item_element(t):
-    """item : STRING tuple NEWLINE"""
-    t[0] = Element(t[1], t[2])
-
-
-def p_item_tuple(t):
-    """item : tuple NEWLINE"""
+def p_item_list(t):
+    """item : list NEWLINE"""
     if len(t[1]) == 1:
         t[0] = t[1][0]
     else:
@@ -52,22 +46,14 @@ def p_item_tree(t):
     t[0] = t[1]
 
 
-def p_tuple(t):
-    """tuple : value
-             | value tuple"""
+def p_list(t):
+    """list : STRING
+            | STRING list"""
     if t[0] is None:
-        t[0] = ()
-    t[0] += (t[1],)
+        t[0] = []
+    t[0].append(t[1])
     if len(t) > 2:
         t[0] += t[2]
-
-
-def p_value(t):
-    """value : NULL
-             | INT
-             | FLOAT
-             | STRING"""
-    t[0] = t[1]
 
 
 def p_error(t):

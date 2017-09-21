@@ -8,29 +8,38 @@ def test_findall():
     assert el.findall('SUS') == []
 
     el = Element('SUS', (1, 2), [
-        Element('NUN', (1, 5.234, 'x'), []),
-        Element('SUS', (3,), []),
+        Element('NUN', (1, 5.234, 'x'), [
+            ['BEEP', 'BOOP'],
+        ]),
+        ['SUS', 3],
     ])
     assert el.findall('SUS') == [el[1]]
     assert list(el.iterfind('SUS')) == [el[1]]
-    assert el.find('./SUS') == el[1]
+    assert el.find('./SUS') is el[1]
+    assert el.find('.//BEEP') is el[0][0]
+
+    sus = el.find('./SUS')
+    sus[1] = 4
+    assert el[1][1] == 4
 
 
 def test_remove():
     el = Element('NAME', (1, 2), [
         Element('NUN', (1, 5.234, 'x'), []),
-        Element('SUS', (3,), []),
+        ['SUS', 3],
     ])
     el.remove(el[0])
     assert el == Element('NAME', (1, 2), [
-        Element('SUS', (3,), []),
+        ['SUS', 3],
     ])
+    el.remove(el[0])
+    assert el == Element('NAME', (1, 2), [])
 
 
 def test_iter():
     el = Element('NAME', (1, 2), [
         Element('NAME', (1, 5.234, 'x'), []),
-        Element('NAME', (3,), []),
+        ['NAME', 3],
     ])
     assert list(el.iter()) == [
         el,
@@ -49,19 +58,20 @@ def test_iter():
 
 def test_no_subelements():
     track = Element('TRACK')
-    expected = Element('TRACK', children=[Element('ITEM')])
-    el = attr.evolve(track)
-    el.append(Element('ITEM'))
+    expected = Element('TRACK', children=[['ITEM', '0']])
+
+    el = attr.evolve(track, children=[])
+    el.append(['ITEM', '0'])
     assert el == expected
 
-    el = attr.evolve(track)
-    el.extend([Element('ITEM')])
+    el = attr.evolve(track, children=[])
+    el.extend([['ITEM', '0']])
     assert el == expected
 
-    el = attr.evolve(track)
-    el.insert(0, Element('ITEM'))
+    el = attr.evolve(track, children=[])
+    el.insert(0, ['ITEM', '0'])
     assert el == expected
 
-    el = attr.evolve(expected)
+    el = attr.evolve(expected, children=[['ITEM', '0']])
     el.remove(el[0])
     assert el == attr.evolve(track, children=[])

@@ -29,23 +29,22 @@ Decode RPP:
    >
    """)
    >>> r
-   Element(tag='REAPER_PROJECT', attrib=(Decimal('0.1'), '4.32', 1372525904), children=[
-       Element(tag='RIPPLE', attrib=(0,), children=None),
-       Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None),
-       Element(tag='AUTOXFADE', attrib=(1,), children=None)
+   Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+       ['RIPPLE', '0'],
+       ['GROUPOVERRIDE', '0', '0', '0'],
+       ['AUTOXFADE', '1'],
    ])
 
 Transform elements into RPP:
 
 .. code-block:: python
 
-   >>> from decimal import Decimal
    >>> from rpp import Element
    >>> rpp.dumps(
-   ...     Element(tag='REAPER_PROJECT', attrib=(Decimal('0.1'), '4.32', 1372525904), children=[
-   ...         Element(tag='RIPPLE', attrib=(0,), children=None),
-   ...         Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None),
-   ...         Element(tag='AUTOXFADE', attrib=(1,), children=None),
+   ...     Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+   ...         ['RIPPLE', '0'],
+   ...         ['GROUPOVERRIDE', '0', '0', '0'],
+   ...         ['AUTOXFADE', '1'],
    ...     ]))
    '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
 
@@ -56,8 +55,16 @@ Transform elements into RPP:
 
 .. code-block:: python
 
-   >>> r.find('.//GROUPOVERRIDE')
-   Element(tag='GROUPOVERRIDE', attrib=(0, 0, 0), children=None)
+   >>> groupoverride = r.find('.//GROUPOVERRIDE')
+   >>> groupoverride
+   ['GROUPOVERRIDE', '0', '0', '0']
+   >>> groupoverride[1:] = ['9', '9', '9']
+   >>> r
+   Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+       ['RIPPLE', '0'],
+       ['GROUPOVERRIDE', '9', '9', '9'],
+       ['AUTOXFADE', '1'],
+   ])
 
 
 Dependencies

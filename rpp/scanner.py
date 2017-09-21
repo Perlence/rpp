@@ -45,20 +45,10 @@ class Lexer:
                 else:
                     pair = line.split(maxsplit=1)
                     thing, rest = pair if len(pair) > 1 else (pair[0], '')
-                    yield self._parse_value(thing, lineno)
+                    yield LexToken('STRING', thing, lineno)
                     line = rest
                 is_first_token_in_line = False
             yield LexToken('NEWLINE', '\r\n', lineno)
-
-    def _parse_value(self, thing, lineno):
-        if re_NULL.match(thing) is not None:
-            return LexToken('NULL', None, lineno)
-        elif re_INT.match(thing) is not None:
-            return LexToken('INT', int(thing), lineno)
-        elif re_FLOAT.match(thing) is not None:
-            return LexToken('FLOAT', Decimal(thing), lineno)
-        else:
-            return LexToken('STRING', thing, lineno)
 
 
 @attr.s
@@ -76,15 +66,9 @@ def starts_with_quote(s):
 tokens = (
     'OPEN',
     'CLOSE',
-    'NULL',
-    'INT',
-    'FLOAT',
     'STRING',
     'NEWLINE',
 )
 
 OPEN = '<'
 CLOSE = '>'
-re_NULL = re.compile(r'^-$')
-re_INT = re.compile(r'^-?([0-9]|[1-9][0-9]+)$')
-re_FLOAT = re.compile(r'^-?\d+\.\d+$')
