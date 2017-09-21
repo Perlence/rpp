@@ -12,12 +12,12 @@ def test_scanner():
     lex = Lexer()
     lex.input('<REAPER - 5 05 0.5 "4.32"\n>')
     assert [tok.value for tok in lex] == [
-        '<', 'REAPER', '-', '5', '05', '0.5', '4.32', '\r\n', '>', '\r\n',
+        '<', 'REAPER', '-', '5', '05', '0.5', '4.32', '\n', '>', '\n',
     ]
 
     lex.input('<"REAPER"\n>')
     assert [tok.value for tok in lex] == [
-        '<', '"REAPER"', '\r\n', '>', '\r\n',
+        '<', '"REAPER"', '\n', '>', '\n',
     ]
 
     lex.input("""\
@@ -28,12 +28,12 @@ def test_scanner():
   |0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 >""")
     assert [tok.value for tok in lex] == [
-        '<', 'NOTES', '\r\n',
-        '|beep  boop', '\r\n',
-        '|', '\r\n',
-        '|hello world', '\r\n',
-        '|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~', '\r\n',
-        '>', '\r\n',
+        '<', 'NOTES', '\n',
+        '|beep  boop', '\n',
+        '|', '\n',
+        '|hello world', '\n',
+        '|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~', '\n',
+        '>', '\n',
     ]
 
 

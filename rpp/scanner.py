@@ -1,6 +1,3 @@
-from decimal import Decimal
-import re
-
 import attr
 
 
@@ -52,7 +49,7 @@ class Lexer:
                         yield LexToken('STRING', thing, lineno)
                         line = rest
                 is_first_token_in_line = False
-            yield LexToken('NEWLINE', '\r\n', lineno)
+            yield LexToken('NEWLINE', '\n', lineno)
 
 
 @attr.s
