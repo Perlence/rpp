@@ -33,8 +33,8 @@ class Element:
         for item in found:
             if isinstance(item, ListBackedElement):
                 yield item.list
-            else:
-                yield item
+            elif isinstance(item, QueryableElement):
+                yield item.element
 
     def iter(self, tag=None):
         return iterate_element(self, tag)

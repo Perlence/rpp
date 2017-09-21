@@ -15,6 +15,7 @@ def test_findall():
     ])
     assert el.findall('SUS') == [el[1]]
     assert list(el.iterfind('SUS')) == [el[1]]
+    assert el.find('./NUN') is el[0]
     assert el.find('./SUS') is el[1]
     assert el.find('.//BEEP') is el[0][0]
 
