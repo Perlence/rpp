@@ -15,6 +15,11 @@ def test_scanner():
         '<', 'REAPER', '-', '5', '05', '0.5', '4.32', '\r\n', '>', '\r\n',
     ]
 
+    lex.input('<"REAPER"\n>')
+    assert [tok.value for tok in lex] == [
+        '<', '"REAPER"', '\r\n', '>', '\r\n',
+    ]
+
 
 def test_loads():
     src = """\

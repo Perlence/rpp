@@ -31,22 +31,23 @@ class Lexer:
             is_first_token_in_line = True
             while line:
                 line = line.strip()
-                if is_first_token_in_line:
-                    if line.startswith(OPEN):
-                        yield LexToken('OPEN', OPEN, lineno)
-                        line = line[1:]
-                    elif line.startswith(CLOSE):
-                        yield LexToken('CLOSE', CLOSE, lineno)
-                        line = line[1:]
-                elif starts_with_quote(line):
+                if starts_with_quote(line):
                     quote_end = line.index(line[0], 1)
                     yield LexToken('STRING', line[1:quote_end], lineno)
                     line = line[quote_end+1:]
                 else:
-                    pair = line.split(maxsplit=1)
-                    thing, rest = pair if len(pair) > 1 else (pair[0], '')
-                    yield LexToken('STRING', thing, lineno)
-                    line = rest
+                    if is_first_token_in_line:
+                        if line.startswith(OPEN):
+                            yield LexToken('OPEN', OPEN, lineno)
+                            line = line[1:]
+                        elif line.startswith(CLOSE):
+                            yield LexToken('CLOSE', CLOSE, lineno)
+                            line = line[1:]
+                    if line:
+                        pair = line.split(maxsplit=1)
+                        thing, rest = pair if len(pair) > 1 else (pair[0], '')
+                        yield LexToken('STRING', thing, lineno)
+                        line = rest
                 is_first_token_in_line = False
             yield LexToken('NEWLINE', '\r\n', lineno)
 
