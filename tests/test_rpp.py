@@ -36,6 +36,11 @@ def test_scanner():
         '>', '\n',
     ]
 
+    lex.input('<REAPER "BEEP\n>')
+    with pytest.raises(ValueError) as exc:
+        list(lex)
+    assert 'closing quote not found at line 1' in str(exc)
+
 
 def test_loads():
     src = """\

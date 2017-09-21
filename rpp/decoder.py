@@ -58,7 +58,7 @@ def p_list(t):
 
 def p_error(t):
     if t is None:
-        message = 'Syntax error at EOF'
+        message = 'syntax error at EOF'
     else:
-        message = 'Syntax error at line {}, token={}'.format(t.lineno or 1, t.type)
+        message = 'syntax error at line {}, token={}'.format(t.lineno or 1, t.type)
     raise ValueError(message)

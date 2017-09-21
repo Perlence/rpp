@@ -29,7 +29,7 @@ class Lexer:
             while line:
                 line = line.strip()
                 if starts_with_quote(line):
-                    quote_end = line.index(line[0], 1)
+                    quote_end = self._find_closing_quote(line, lineno)
                     yield LexToken('STRING', line[1:quote_end], lineno)
                     line = line[quote_end+1:]
                 else:
@@ -50,6 +50,12 @@ class Lexer:
                         line = rest
                 is_first_token_in_line = False
             yield LexToken('NEWLINE', '\n', lineno)
+
+    def _find_closing_quote(self, line, lineno):
+        try:
+            return line.index(line[0], 1)
+        except ValueError:
+            raise ValueError('closing quote not found at line {}'.format(lineno))
 
 
 @attr.s
