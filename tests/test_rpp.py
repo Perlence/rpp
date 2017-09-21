@@ -5,7 +5,7 @@ import pytest
 
 from rpp import Element, loads, dumps
 from rpp.scanner import Lexer
-from rpp.encoder import tostr
+from rpp.encoder import encode_value
 
 
 def test_scanner():
@@ -18,6 +18,22 @@ def test_scanner():
     lex.input('<"REAPER"\n>')
     assert [tok.value for tok in lex] == [
         '<', '"REAPER"', '\r\n', '>', '\r\n',
+    ]
+
+    lex.input("""\
+<NOTES
+  |beep  boop
+  |
+  |hello world
+  |0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+>""")
+    assert [tok.value for tok in lex] == [
+        '<', 'NOTES', '\r\n',
+        '|beep  boop', '\r\n',
+        '|', '\r\n',
+        '|hello world', '\r\n',
+        '|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~', '\r\n',
+        '>', '\r\n',
     ]
 
 
@@ -81,14 +97,14 @@ def test_loads():
 
 
 def test_tostr():
-    assert tostr('') == '""'
-    assert tostr('"hey') == "'\"hey'"
-    assert tostr('Track') == 'Track'
-    assert tostr('Track 1') == '"Track 1"'
-    assert tostr('Track "1"') == '\'Track "1"\''
-    assert tostr('Track "1" \'2\'') == '`Track "1" \'2\'`'
-    assert tostr('Track "1" \'2\' `3`') == '`Track "1" \'2\' \'3\'`'
-    assert tostr('{010F6508-D16E-4DA0-BE44-E8F3C39D6314}') == '{010F6508-D16E-4DA0-BE44-E8F3C39D6314}'
+    assert encode_value('') == '""'
+    assert encode_value('"hey') == "'\"hey'"
+    assert encode_value('Track') == 'Track'
+    assert encode_value('Track 1') == '"Track 1"'
+    assert encode_value('Track "1"') == '\'Track "1"\''
+    assert encode_value('Track "1" \'2\'') == '`Track "1" \'2\'`'
+    assert encode_value('Track "1" \'2\' `3`') == '`Track "1" \'2\' \'3\'`'
+    assert encode_value('{010F6508-D16E-4DA0-BE44-E8F3C39D6314}') == '{010F6508-D16E-4DA0-BE44-E8F3C39D6314}'
 
 
 def test_dumps():
@@ -99,6 +115,7 @@ def test_dumps():
         ['NAME', '09azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'],
         ['NAME', '09 azAZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\'{|}~'],
         ['VERSION', '4.32'],
+        ['NAME', '|Beep boop'],
         'AAAQAAAA',
     ])
     expected = """\
@@ -111,6 +128,7 @@ def test_dumps():
   NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
   NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
   VERSION 4.32
+  NAME "|Beep boop"
   AAAQAAAA
 >\n"""
     assert dumps(src) == expected

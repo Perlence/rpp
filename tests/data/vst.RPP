@@ -1,4 +1,4 @@
-<REAPER_PROJECT 0.1 "5.50c" 1505909242
+<REAPER_PROJECT 0.1 "5.50c" 1505988031
   RIPPLE 0
   GROUPOVERRIDE 0 0 0
   AUTOXFADE 1
@@ -14,7 +14,7 @@
   TIMEMODE 1 5 -1 30 0
   VIDEO_CONFIG 0 0 256
   PANMODE 3
-  CURSOR 0.5
+  CURSOR 0
   ZOOM 100 0 0
   VZOOMEX 6
   USE_REC_CFG 0
@@ -177,7 +177,7 @@
     BUSCOMP 0 0
     SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
     FREEMODE 0
-    SEL 0
+    SEL 1
     REC 0 0 0 0 0 0 0
     VU 2
     TRACKHEIGHT 0 0
@@ -226,7 +226,8 @@
       IGUID {50B571AB-B8B2-4414-994E-D6A8EEC62ACF}
       IID 6
       <NOTES
-        |beep boop
+        |beep  boop
+        |
         |hello world
         |0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
       >
@@ -234,7 +235,7 @@
     >
   >
   <TRACK {EC081DCC-02CB-47DE-BD81-7F744676036E}
-    NAME Beep
+    NAME "|Beep Boop"
     PEAKCOL 16576
     BEAT -1
     AUTOMODE 0

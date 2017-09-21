@@ -43,6 +43,9 @@ class Lexer:
                         elif line.startswith(CLOSE):
                             yield LexToken('CLOSE', CLOSE, lineno)
                             line = line[1:]
+                        elif starts_with_pipe(line):
+                            yield LexToken('STRING', line, lineno)
+                            line = ''
                     if line:
                         pair = line.split(maxsplit=1)
                         thing, rest = pair if len(pair) > 1 else (pair[0], '')
@@ -62,6 +65,10 @@ class LexToken:
 def starts_with_quote(s):
     quotes = '"\'`'
     return s[0] in quotes
+
+
+def starts_with_pipe(s):
+    return s[0] == '|'
 
 
 tokens = (

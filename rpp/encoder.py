@@ -2,7 +2,7 @@ from collections import Iterable
 from decimal import Decimal
 
 from .element import Element
-from .scanner import starts_with_quote
+from .scanner import starts_with_quote, starts_with_pipe
 
 
 def encode(element, indent=2, level=0):
@@ -14,9 +14,9 @@ def encode(element, indent=2, level=0):
             result += encode(item, level=level+1)
         result += ' ' * level * indent + '>\n'
     elif isinstance(element, str):
-        result += element + '\n'
-    elif isinstance(element, Iterable):
-        result += encode_iterable(element) + '\n'
+        result += quote_string(element, quote_pipe=False) + '\n'
+    else:
+        result += encode_value(element) + '\n'
     return result
 
 
@@ -28,32 +28,32 @@ def encode_tag_and_attrib(element):
     return result
 
 
-def encode_iterable(iterable):
-    return ' '.join(map(tostr, iterable))
-
-
-def tostr(value):
+def encode_value(value):
     if isinstance(value, str):
         return quote_string(value)
+    elif isinstance(value, Iterable):
+        return encode_iterable(value)
     elif isinstance(value, Decimal):
-        return format(value, 'f')
-    elif value is None:
-        return '-'
+        return quote_string(format(value, 'f'))
     else:
-        return str(value)
+        return quote_string(str(value))
 
 
-def quote_string(value):
+def encode_iterable(iterable):
+    return ' '.join(map(encode_value, iterable))
+
+
+def quote_string(value, quote_pipe=True):
     if not value:
         return '""'
-    if not should_quote(value):
+    if not should_quote(value, quote_pipe):
         return value
     quote, value = quote_mark(value)
     return '{quote}{value}{quote}'.format(quote=quote, value=value)
 
 
-def should_quote(s):
-    return starts_with_quote(s) or has_whitespace(s)
+def should_quote(s, quote_pipe):
+    return (quote_pipe or not starts_with_pipe(s)) and (starts_with_quote(s) or has_whitespace(s))
 
 
 def has_whitespace(s):
