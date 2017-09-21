@@ -5,7 +5,7 @@ with open('README.rst') as fp:
 
 setup(
     name='rpp',
-    version='0.2',
+    version='0.3',
     description='REAPER Project File Parser',
     long_description=README,
     author='Sviatoslav Abakumov',
