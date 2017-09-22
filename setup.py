@@ -12,9 +12,11 @@ setup(
     author_email='dust.harvesting@gmail.com',
     license='BSD',
     url='https://github.com/Perlence/rpp',
-    download_url='https://github.com/Perlence/rpp/archive/master.zip',
+    download_url='https://github.com/Perlence/rpp/archive/0.3.tar.gz',
     packages=['rpp'],
     zip_safe=False,
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     install_requires=[
         'ply',
         'attrs',
