@@ -70,9 +70,6 @@ class QueryableElement:
             elif isinstance(item, list):
                 yield ListBackedElement(item)
 
-    def __len__(self):
-        return len(self.element)
-
 
 @attr.s
 class ListBackedElement:
@@ -89,15 +86,10 @@ class ListBackedElement:
     def __iter__(self):
         return iter(())
 
-    def __len__(self):
-        return 0
-
 
 def iterate_element(element, tag):
     if tag is None or element.tag == tag:
         yield element
-    if not len(element):
-        return
     for item in element:
         if hasattr(item, 'iter'):
             for subitem in item.iter(tag):
