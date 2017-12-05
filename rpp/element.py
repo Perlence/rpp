@@ -4,7 +4,7 @@ import attr
 
 
 @attr.s
-class Element:
+class Element(object):
     tag = attr.ib()
     attrib = attr.ib(default=())
     children = attr.ib(default=attr.Factory(list))
@@ -53,7 +53,7 @@ class Element:
 
 
 @attr.s
-class QueryableElement:
+class QueryableElement(object):
     element = attr.ib()
 
     @property
@@ -72,7 +72,7 @@ class QueryableElement:
 
 
 @attr.s
-class ListBackedElement:
+class ListBackedElement(object):
     list = attr.ib()
 
     @property

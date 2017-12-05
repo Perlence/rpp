@@ -11,7 +11,7 @@ def lexer():
     return Lexer()
 
 
-class Lexer:
+class Lexer(object):
     _input = None
     _iter = None
 
@@ -59,7 +59,7 @@ class Lexer:
 
 
 @attr.s
-class LexToken:
+class LexToken(object):
     type = attr.ib()
     value = attr.ib()
     lineno = attr.ib()
