@@ -4,10 +4,9 @@ RPP
 Description
 -----------
 
-RPP is a format used to describe `REAPER <http://reaper.fm>`_ projects.  This
-package is designed to be RPP parser/emitter and uses PLY as parser framework.
-It understands the following RPP data types: integer, float, string, uuid,
-symbolic data (base64).
+RPP is a format used to describe `REAPER <http://reaper.fm>`_ projects. This package is designed to be RPP
+parser/emitter and uses `PLY <http://www.dabeaz.com/ply/>`_ as parser framework.
+
 
 Examples
 --------
@@ -30,62 +29,46 @@ Decode RPP:
    >
    """)
    >>> r
-   RPP([['REAPER_PROJECT', 0.1, '4.32', 1372525904], ['RIPPLE', 0], ['GROUPOVERRIDE', 0, 0, 0], ['AUTOXFADE', 1]])
-
-Transform lists into RPP:
-
-.. code-block:: python
-
-   >>> rpp.dumps(
-   [['REAPER_PROJECT', 0.1, '4.32', 1372525904],
-    ['RIPPLE', 0],
-    ['GROUPOVERRIDE', 0, 0, 0],
-    ['AUTOXFADE', 1]
+   Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+       ['RIPPLE', '0'],
+       ['GROUPOVERRIDE', '0', '0', '0'],
+       ['AUTOXFADE', '1'],
    ])
-   '<REAPER_PROJECT 0.1 "4.32" 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>'
 
-You can also perform some quering operations:
-
-.. code-block:: python
-
-   >>> r.find('GROUPOVERRIDE')
-   ([2], ['GROUPOVERRIDE', 0, 0, 0])
-
-The result is a tuple with first element as list of tree indexes and second as
-the found value.
-
-To change the value of an item, do the following:
+Transform elements into RPP:
 
 .. code-block:: python
 
-   >>> r.update([1], ['RIPPLE', 1])
+   >>> from rpp import Element
+   >>> rpp.dumps(
+   ...     Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+   ...         ['RIPPLE', '0'],
+   ...         ['GROUPOVERRIDE', '0', '0', '0'],
+   ...         ['AUTOXFADE', '1'],
+   ...     ]))
+   '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
+
+``Element`` mimics the interface of xml.etree.ElementTree.Element_. You can perform quering operations with ``findall``,
+``find``, ``iterfind``. Note that attribute and text predicates are not supported.
+
+.. _xml.etree.ElementTree.Element: https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
+
+.. code-block:: python
+
+   >>> groupoverride = r.find('.//GROUPOVERRIDE')
+   >>> groupoverride
+   ['GROUPOVERRIDE', '0', '0', '0']
+   >>> groupoverride[1:] = ['9', '9', '9']
    >>> r
-   RPP([['REAPER_PROJECT', 0.1, '4.32', 1372525904], ['RIPPLE', 1], ['GROUPOVERRIDE', 0, 0, 0], ['AUTOXFADE', 1]])
+   Element(tag='REAPER_PROJECT', attrib=['0.1', '4.32', '1372525904'], children=[
+       ['RIPPLE', '0'],
+       ['GROUPOVERRIDE', '9', '9', '9'],
+       ['AUTOXFADE', '1'],
+   ])
+
 
 Dependencies
 ------------
 
-- ply
-
-License
--------
-
-Copyright (c) 2013 Sviatoslav Abakumov
-
-This software is provided 'as-is', without any express or implied warranty. In
-no event will the authors be held liable for any damages arising from the use of
-this software.
-
-Permission is granted to anyone to use this software for any purpose, including
-commercial applications, and to alter it and redistribute it freely, subject to
-the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not claim
-   that you wrote the original software. If you use this software in a product,
-   an acknowledgment in the product documentation would be appreciated but is
-   not required.
-
-2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-
-3. This notice may not be removed or altered from any source distribution.
+- `attrs <https://attrs.readthedocs.org/>`_
+- `ply <http://www.dabeaz.com/ply/>`_

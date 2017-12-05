@@ -1,40 +1,34 @@
-#!/usr/bin/python
-#
-# Copyright (c) 2013 Sviatoslav Abakumov
-# 
-# This software is provided 'as-is', without any express or implied
-# warranty. In no event will the authors be held liable for any damages
-# arising from the use of this software.
-# 
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
-# 
-# 1. The origin of this software must not be misrepresented; you must not
-#    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 
-# 3. This notice may not be removed or altered from any source
-#    distribution.
+from setuptools import setup
 
-from distutils.core import setup
-# rpp attempts to load ply via scanner.py which fails because ply hasn't been installed yet.
-# from rpp import __version__
+with open('README.rst') as fp:
+    README = fp.read()
 
-setup(name='rpp',
-      # For now, we hardwire the version until we figure out how to avoid the circular reference to ply.
-      # version=__version__,
-      version='0.3',
-      description='REAPER Project File Parser',
-      author='Sviatoslav Abakumov',
-      author_email='dust.harvesting@gmail.com',
-      license='zlib',
-      url='https://bitbucket.org/Perlence/rpp/src',
-      packages=['rpp'],
-      package_dir={'rpp': 'rpp'},
-      install_requires=['ply==3.9']
-      )
+setup(
+    name='rpp',
+    version='0.3',
+    description='REAPER Project File Parser',
+    long_description=README,
+    author='Sviatoslav Abakumov',
+    author_email='dust.harvesting@gmail.com',
+    license='BSD',
+    url='https://github.com/Perlence/rpp',
+    download_url='https://github.com/Perlence/rpp/archive/0.3.tar.gz',
+    packages=['rpp'],
+    zip_safe=False,
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
+    install_requires=[
+        'ply',
+        'attrs',
+    ],
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only',
+        'Topic :: Text Processing',
+    ])

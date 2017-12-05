@@ -1,37 +1,9 @@
-r"""RPP is a format used to describe REAPER <http://reaper.fm> projects.
+"""RPP is a format used to describe `REAPER <http://reaper.fm>`_
+projects."""
 
-Decoding RPP::
+from .element import Element
+from .rpp import dump, dumps, loads, load
 
-    >>> import rpp
-    >>> rpp.loads('<REAPER_PROJECT 0.1 "4.32" 1372525904\nRIPPLE 0 GROUPOVERRIDE 0 0 0\nAUTOXFADE 1>')
-    RPP([['REAPER_PROJECT', 0.1, '4.32', 1372525904], ['RIPPLE', 0], ['GROUPOVERRIDE', 0, 0, 0], ['AUTOXFADE', 1]])
-
-Encoding RPP::
-
-    >>> import rpp
-    >>> rpp.dumps([['ENTRY', 1, 2, 3], [['SUBFOLDER', '']]])
-    '<ENTRY 1 2 3\n  <SUBFOLDER ""\n  >\n>'
-"""
-__version__ = '0.2'
-__all__ = [
-    'dump', 'dumps', 'load', 'loads',
-    'RPP', 'Symbol',
-    ]
-
+__version__ = '0.3'
 __author__ = 'Sviatoslav Abakumov <dust.harvesting@gmail.com>'
-
-from .scanner import Symbol
-from .decoder import RPP, yacc
-from .encoder import encode
-
-def loads(string):
-    return decoder.yacc.parse(string)
-
-def load(fp):
-    return loads(fp.read())
-
-def dumps(lists, indent=2):
-    return encoder.encode(lists, indent=indent)
-
-def dump(lists, fp, indent=2):
-    fp.write(dumps(lists, indent))
+__all__ = ['dump', 'dumps', 'load', 'loads', 'Element']

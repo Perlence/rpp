@@ -22,8 +22,10 @@ lib64
 pip-log.txt
 
 # Unit test / coverage reports
+.cache/
 .coverage
 .tox
+htmlcov/
 nosetests.xml
 
 # Translations
@@ -37,3 +39,11 @@ nosetests.xml
 
 config.*
 parsetab.*
+
+py36/
+
+tags
+Session.vim
+
+*.RPP-bak
+parser.out
