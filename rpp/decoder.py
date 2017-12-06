@@ -55,7 +55,6 @@ def p_list(t):
     if len(t) > 2:
         t[0] += t[2]
 
-
 def p_error(t):
     if t is None:
         message = 'syntax error at EOF'

@@ -11,7 +11,7 @@ def lexer():
     return Lexer()
 
 
-class Lexer:
+class Lexer(object):
     _input = None
     _iter = None
 
@@ -44,7 +44,7 @@ class Lexer:
                             yield LexToken('STRING', line, lineno)
                             line = ''
                     if line:
-                        pair = line.split(maxsplit=1)
+                        pair = line.split(None, 1)
                         thing, rest = pair if len(pair) > 1 else (pair[0], '')
                         yield LexToken('STRING', thing, lineno)
                         line = rest
@@ -59,7 +59,7 @@ class Lexer:
 
 
 @attr.s
-class LexToken:
+class LexToken(object):
     type = attr.ib()
     value = attr.ib()
     lineno = attr.ib()
