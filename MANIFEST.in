@@ -1,3 +1,4 @@
 include LICENSE.rst
+include tox.ini
 graft tests
 global-exclude *.py[co]
