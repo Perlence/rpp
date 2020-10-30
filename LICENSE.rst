@@ -1,6 +1,4 @@
-Copyright (c) 2015 by Sviatoslav Abakumov.
-
-All rights reserved.
+Copyright 2015 Sviatoslav Abakumov
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
