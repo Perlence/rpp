@@ -145,7 +145,7 @@ def test_dumps():
 ])
 def test_conversion(filename):
     DIR = path.dirname(__file__)
-    with open(path.join(DIR, 'data', filename), 'rU') as fp:
+    with open(path.join(DIR, 'data', filename), 'r') as fp:
         raw_proj = fp.read()
 
     # Allow some differences
