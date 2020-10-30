@@ -25,14 +25,14 @@ def test_scanner():
   |beep  boop
   |
   |hello world
-  |0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+  |0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
 >""")
     assert [tok.value for tok in lex] == [
         '<', 'NOTES', '\n',
         '|beep  boop', '\n',
         '|', '\n',
         '|hello world', '\n',
-        '|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~', '\n',
+        '|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~', '\n',
         '>', '\n',
     ]
 
@@ -65,8 +65,8 @@ def test_loads():
   <JS loser/3BandEQ ""
     0.000000 200.000000 0.000000 2000.000000 0.000000 0.000000 - - - - -
   >
-  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
-  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
+  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
+  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\\]^_'{|}~`
   NAME <
   NAME >
   NAME <>
@@ -130,8 +130,8 @@ def test_dumps():
   >
   <RECORD_CFG
   >
-  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
-  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\]^_'{|}~`
+  NAME 09azAZ!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
+  NAME `09 azAZ!"#$%&'()*+,-./:;<=>?@[\\]^_'{|}~`
   VERSION 4.32
   NAME "|Beep boop"
   AAAQAAAA
