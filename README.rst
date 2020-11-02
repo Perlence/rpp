@@ -1,9 +1,6 @@
 RPP
 ===
 
-.. image:: https://travis-ci.org/Perlence/rpp.svg?branch=master&status=created
-   :alt: Travis-CI Build Status
-   :target: https://travis-ci.org/Perlence/PyGuitarPro
 
 Description
 -----------
