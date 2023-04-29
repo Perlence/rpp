@@ -25,6 +25,8 @@ class Lexer:
     def __iter__(self):
         lines = self._input.splitlines()
         for lineno, line in enumerate(lines, start=1):
+            if not line.strip():
+                continue
             is_first_token_in_line = True
             while line:
                 line = line.strip()
