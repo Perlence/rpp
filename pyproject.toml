@@ -1,0 +1,35 @@
+[project]
+name = "rpp"
+dynamic = ["version"]
+description = "REAPER Project File Parser"
+readme = "README.rst"
+license = {text = "BSD-3-Clause"}
+requires-python = ">= 3.7"
+authors = [{name = "Sviatoslav Abakumov", email = "dust.harvesting@gmail.com"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Text Processing",
+]
+dependencies = [
+    "attrs",
+    "ply",
+]
+
+[project.urls]
+"Source code" = "https://github.com/Perlence/rpp"
+"Issue tracker" = "https://github.com/Perlence/rpp/issues"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "rpp.__version__"}
