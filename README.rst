@@ -1,8 +1,8 @@
 RPP
 ===
 
-RPP is a format used to describe `REAPER <http://reaper.fm>`_ projects. This package is designed to be RPP
-parser/emitter and uses `PLY <http://www.dabeaz.com/ply/>`_ as parser framework.
+RPP is a format used to describe `REAPER <http://reaper.fm>`_ projects. This package is designed to be an RPP
+parser/emitter and uses `PLY <http://www.dabeaz.com/ply/>`_ as a parser framework.
 
 Examples
 --------
@@ -44,8 +44,8 @@ Transform elements into RPP:
    ...     ]))
    '<REAPER_PROJECT 0.1 4.32 1372525904\n  RIPPLE 0\n  GROUPOVERRIDE 0 0 0\n  AUTOXFADE 1\n>\n'
 
-``Element`` mimics the interface of xml.etree.ElementTree.Element_. You can perform quering operations with ``findall``,
-``find``, ``iterfind``. Note that attribute and text predicates are not supported.
+``Element`` mimics the interface of xml.etree.ElementTree.Element_. You can perform querying operations with
+``findall``, ``find``, ``iterfind``. Note that attribute and text predicates are not supported.
 
 .. _xml.etree.ElementTree.Element: https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
 
