@@ -1,13 +1,8 @@
 RPP
 ===
 
-
-Description
------------
-
 RPP is a format used to describe `REAPER <http://reaper.fm>`_ projects. This package is designed to be RPP
 parser/emitter and uses `PLY <http://www.dabeaz.com/ply/>`_ as parser framework.
-
 
 Examples
 --------
@@ -66,7 +61,6 @@ Transform elements into RPP:
        ['GROUPOVERRIDE', '9', '9', '9'],
        ['AUTOXFADE', '1'],
    ])
-
 
 Dependencies
 ------------
