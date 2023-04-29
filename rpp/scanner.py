@@ -11,7 +11,7 @@ def lexer():
     return Lexer()
 
 
-class Lexer(object):
+class Lexer:
     _input = None
     _iter = None
 
@@ -44,7 +44,7 @@ class Lexer(object):
                             yield LexToken('STRING', line, lineno)
                             line = ''
                     if line:
-                        pair = line.split(None, 1)
+                        pair = line.split(maxsplit=1)
                         thing, rest = pair if len(pair) > 1 else (pair[0], '')
                         yield LexToken('STRING', thing, lineno)
                         line = rest
@@ -55,11 +55,11 @@ class Lexer(object):
         try:
             return line.index(line[0], 1)
         except ValueError:
-            raise ValueError('closing quote not found at line {}'.format(lineno))
+            raise ValueError(f'closing quote not found at line {lineno}')
 
 
 @attr.s
-class LexToken(object):
+class LexToken:
     type = attr.ib()
     value = attr.ib()
     lineno = attr.ib()

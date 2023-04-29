@@ -1,4 +1,3 @@
-import sys
 from os import path
 
 import attr
@@ -146,8 +145,7 @@ def test_dumps():
 ])
 def test_conversion(filename):
     DIR = path.dirname(__file__)
-    universal_newlines = 'U' if sys.version_info < (3,) else ''
-    with open(path.join(DIR, 'data', filename), 'r'+universal_newlines) as fp:
+    with open(path.join(DIR, 'data', filename)) as fp:
         raw_proj = fp.read()
 
     # Allow some differences

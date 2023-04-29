@@ -4,7 +4,7 @@ import attr
 
 
 @attr.s
-class Element(object):
+class Element:
     tag = attr.ib()
     attrib = attr.ib(default=())
     children = attr.ib(default=attr.Factory(list))
@@ -53,7 +53,7 @@ class Element(object):
 
 
 @attr.s
-class QueryableElement(object):
+class QueryableElement:
     element = attr.ib()
 
     @property
@@ -72,7 +72,7 @@ class QueryableElement(object):
 
 
 @attr.s
-class ListBackedElement(object):
+class ListBackedElement:
     list = attr.ib()
 
     @property
@@ -92,7 +92,6 @@ def iterate_element(element, tag):
         yield element
     for item in element:
         if hasattr(item, 'iter'):
-            for subitem in item.iter(tag):
-                yield subitem
+            yield from item.iter(tag)
         elif tag is None:
             yield item

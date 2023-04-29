@@ -60,5 +60,5 @@ def p_error(t):
     if t is None:
         message = 'syntax error at EOF'
     else:
-        message = 'syntax error at line {}, token={}'.format(t.lineno or 1, t.type)
+        message = f'syntax error at line {t.lineno or 1}, token={t.type}'
     raise ValueError(message)
