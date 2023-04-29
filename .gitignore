@@ -41,7 +41,7 @@ nosetests.xml
 config.*
 parsetab.*
 
-py36/
+env/
 
 tags
 Session.vim
